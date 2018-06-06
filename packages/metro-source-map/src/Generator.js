@@ -4,41 +4,41 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
-'use strict';
+'use strict';var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};
 
 const B64Builder = require('./B64Builder');
 
-import type {BabelSourceMap} from 'babel-core';
+
 
 /**
- * Generates a source map from raw mappings.
- *
- * Raw mappings are a set of 2, 4, or five elements:
- *
- * - line and column number in the generated source
- * - line and column number in the original source
- * - symbol name in the original source
- *
- * Mappings have to be passed in the order appearance in the generated source.
- */
+                                             * Generates a source map from raw mappings.
+                                             *
+                                             * Raw mappings are a set of 2, 4, or five elements:
+                                             *
+                                             * - line and column number in the generated source
+                                             * - line and column number in the original source
+                                             * - symbol name in the original source
+                                             *
+                                             * Mappings have to be passed in the order appearance in the generated source.
+                                             */
 class Generator {
-  builder: B64Builder;
-  last: {|
-    generatedColumn: number,
-    generatedLine: number,
-    name: number,
-    source: number,
-    sourceColumn: number,
-    sourceLine: number,
-  |};
-  names: IndexedSet;
-  source: number;
-  sources: Array<string>;
-  sourcesContent: Array<?string>;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   constructor() {
     this.builder = new B64Builder();
@@ -48,8 +48,8 @@ class Generator {
       name: 0,
       source: 0,
       sourceColumn: 0,
-      sourceLine: 1,
-    };
+      sourceLine: 1 };
+
     this.names = new IndexedSet();
     this.source = -1;
     this.sources = [];
@@ -57,35 +57,35 @@ class Generator {
   }
 
   /**
-   * Mark the beginning of a new source file.
-   */
-  startFile(file: string, code: string) {
+     * Mark the beginning of a new source file.
+     */
+  startFile(file, code) {
     this.source = this.sources.push(file) - 1;
     this.sourcesContent.push(code);
   }
 
   /**
-   * Mark the end of the current source file
-   */
+     * Mark the end of the current source file
+     */
   endFile() {
     this.source = -1;
   }
 
   /**
-   * Adds a mapping for generated code without a corresponding source location.
-   */
-  addSimpleMapping(generatedLine: number, generatedColumn: number): void {
+     * Adds a mapping for generated code without a corresponding source location.
+     */
+  addSimpleMapping(generatedLine, generatedColumn) {
     const last = this.last;
     if (
-      this.source === -1 ||
-      (generatedLine === last.generatedLine &&
-        generatedColumn < last.generatedColumn) ||
-      generatedLine < last.generatedLine
-    ) {
+    this.source === -1 ||
+    generatedLine === last.generatedLine &&
+    generatedColumn < last.generatedColumn ||
+    generatedLine < last.generatedLine)
+    {
       const msg =
-        this.source === -1
-          ? 'Cannot add mapping before starting a file with `addFile()`'
-          : 'Mapping is for a position preceding an earlier mapping';
+      this.source === -1 ?
+      'Cannot add mapping before starting a file with `addFile()`' :
+      'Mapping is for a position preceding an earlier mapping';
       throw new Error(msg);
     }
 
@@ -100,21 +100,21 @@ class Generator {
   }
 
   /**
-   * Adds a mapping for generated code with a corresponding source location.
-   */
+     * Adds a mapping for generated code with a corresponding source location.
+     */
   addSourceMapping(
-    generatedLine: number,
-    generatedColumn: number,
-    sourceLine: number,
-    sourceColumn: number,
-  ): void {
+  generatedLine,
+  generatedColumn,
+  sourceLine,
+  sourceColumn)
+  {
     this.addSimpleMapping(generatedLine, generatedColumn);
 
     const last = this.last;
-    this.builder
-      .append(this.source - last.source)
-      .append(sourceLine - last.sourceLine)
-      .append(sourceColumn - last.sourceColumn);
+    this.builder.
+    append(this.source - last.source).
+    append(sourceLine - last.sourceLine).
+    append(sourceColumn - last.sourceColumn);
 
     last.source = this.source;
     last.sourceColumn = sourceColumn;
@@ -122,21 +122,21 @@ class Generator {
   }
 
   /**
-   * Adds a mapping for code with a corresponding source location + symbol name.
-   */
+     * Adds a mapping for code with a corresponding source location + symbol name.
+     */
   addNamedSourceMapping(
-    generatedLine: number,
-    generatedColumn: number,
-    sourceLine: number,
-    sourceColumn: number,
-    name: string,
-  ): void {
+  generatedLine,
+  generatedColumn,
+  sourceLine,
+  sourceColumn,
+  name)
+  {
     this.addSourceMapping(
-      generatedLine,
-      generatedColumn,
-      sourceLine,
-      sourceColumn,
-    );
+    generatedLine,
+    generatedColumn,
+    sourceLine,
+    sourceColumn);
+
 
     const last = this.last;
     const nameIndex = this.names.indexFor(name);
@@ -145,33 +145,33 @@ class Generator {
   }
 
   /**
-   * Return the source map as object.
-   */
-  toMap(file?: string, options?: {excludeSource?: boolean}): BabelSourceMap {
+     * Return the source map as object.
+     */
+  toMap(file, options) {
     let content;
 
     if (options && options.excludeSource) {
       content = {};
     } else {
-      content = {sourcesContent: this.sourcesContent.slice()};
+      content = { sourcesContent: this.sourcesContent.slice() };
     }
 
-    return {
+    return _extends({
       version: 3,
       file,
-      sources: this.sources.slice(),
-      ...content,
+      sources: this.sources.slice() },
+    content, {
       names: this.names.items(),
-      mappings: this.builder.toString(),
-    };
+      mappings: this.builder.toString() });
+
   }
 
   /**
-   * Return the source map as string.
-   *
-   * This is ~2.5x faster than calling `JSON.stringify(generator.toMap())`
-   */
-  toString(file?: string, options?: {excludeSource?: boolean}): string {
+     * Return the source map as string.
+     *
+     * This is ~2.5x faster than calling `JSON.stringify(generator.toMap())`
+     */
+  toString(file, options) {
     let content;
 
     if (options && options.excludeSource) {
@@ -182,27 +182,27 @@ class Generator {
 
     return (
       '{' +
-      '"version":3,' +
-      (file ? `"file":${JSON.stringify(file)},` : '') +
+      '"version":3,' + (
+      file ? `"file":${JSON.stringify(file)},` : '') +
       `"sources":${JSON.stringify(this.sources)},` +
       content +
       `"names":${JSON.stringify(this.names.items())},` +
       `"mappings":"${this.builder.toString()}"` +
-      '}'
-    );
-  }
-}
+      '}');
+
+  }}
+
 
 class IndexedSet {
-  map: Map<string, number>;
-  nextIndex: number;
+
+
 
   constructor() {
     this.map = new Map();
     this.nextIndex = 0;
   }
 
-  indexFor(x: string) {
+  indexFor(x) {
     let index = this.map.get(x);
     if (index == null) {
       index = this.nextIndex++;
@@ -213,7 +213,7 @@ class IndexedSet {
 
   items() {
     return Array.from(this.map.keys());
-  }
-}
+  }}
+
 
 module.exports = Generator;

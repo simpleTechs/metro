@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
@@ -15,21 +15,21 @@ const path = require('path');
 const NODE_MODULES = path.sep + 'node_modules' + path.sep;
 
 class DependencyGraphHelpers {
-  _providesModuleNodeModules: Array<string>;
-  _assetExts: Set<string>;
 
-  constructor({
-    providesModuleNodeModules,
-    assetExts,
-  }: {
-    +providesModuleNodeModules: Array<string>,
-    +assetExts: Array<string>,
-  }) {
+
+
+  constructor(_ref)
+
+
+
+
+
+  {let providesModuleNodeModules = _ref.providesModuleNodeModules,assetExts = _ref.assetExts;
     this._providesModuleNodeModules = providesModuleNodeModules;
     this._assetExts = new Set(assetExts);
   }
 
-  isNodeModulesDir(file: string) {
+  isNodeModulesDir(file) {
     const index = file.lastIndexOf(NODE_MODULES);
     if (index === -1) {
       return false;
@@ -46,13 +46,13 @@ class DependencyGraphHelpers {
     return true;
   }
 
-  isAssetFile(file: string) {
+  isAssetFile(file) {
     return this._assetExts.has(this.extname(file));
   }
 
-  extname(name: string) {
+  extname(name) {
     return path.extname(name).substr(1);
-  }
-}
+  }}
+
 
 module.exports = DependencyGraphHelpers;

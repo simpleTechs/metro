@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 'use strict';
@@ -12,10 +12,10 @@
 const writeFile = require('../writeFile');
 
 function writeSourcemap(
-  fileName: string,
-  contents: string,
-  log: (...args: Array<string>) => void,
-): Promise<mixed> {
+fileName,
+contents,
+log)
+{
   if (!fileName) {
     return Promise.resolve();
   }

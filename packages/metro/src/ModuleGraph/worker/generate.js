@@ -5,33 +5,33 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * 
  */
 
-'use strict';
+'use strict';var _require =
 
-const {babelGenerate} = require('../../babel-bridge');
+require('../../babel-bridge');const babelGenerate = _require.babelGenerate;
 
-import type {Ast} from '@babel/core';
+
 
 function generate(
-  ast: Ast,
-  filename: string,
-  sourceCode: string,
-  compact: boolean,
-) {
+ast,
+filename,
+sourceCode,
+compact)
+{
   const generated = babelGenerate(
-    ast,
-    {
-      comments: false,
-      compact,
-      filename,
-      sourceFileName: filename,
-      sourceMaps: true,
-      sourceMapTarget: filename,
-    },
-    sourceCode,
-  );
+  ast,
+  {
+    comments: false,
+    compact,
+    filename,
+    sourceFileName: filename,
+    sourceMaps: true,
+    sourceMapTarget: filename },
+
+  sourceCode);
+
 
   if (generated.map) {
     delete generated.map.sourcesContent;

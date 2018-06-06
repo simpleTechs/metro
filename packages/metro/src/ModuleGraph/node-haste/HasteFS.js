@@ -4,26 +4,26 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
-'use strict';
+'use strict';var _require =
 
-const {dirname, join, parse} = require('path');
+require('path');const dirname = _require.dirname,join = _require.join,parse = _require.parse;
 
 module.exports = class HasteFS {
-  directories: Set<string>;
-  directoryEntries: Map<string, Array<string>>;
-  files: Set<string>;
 
-  constructor(files: Array<string>) {
+
+
+
+  constructor(files) {
     this.directories = buildDirectorySet(files);
     this.directoryEntries = buildDirectoryEntries(files.map(parse));
     this.files = new Set(files);
   }
 
-  closest(path: string, fileName: string): ?string {
+  closest(path, fileName) {
     const parsedPath = parse(path);
     const root = parsedPath.root;
     let dir = parsedPath.dir;
@@ -37,11 +37,11 @@ module.exports = class HasteFS {
     return null;
   }
 
-  dirExists(path: string) {
+  dirExists(path) {
     return this.directories.has(path);
   }
 
-  exists(path: string) {
+  exists(path) {
     return this.files.has(path);
   }
 
@@ -53,11 +53,11 @@ module.exports = class HasteFS {
     throw new Error('HasteFS.matchFiles is not implemented yet.');
   }
 
-  matches(directory: string, pattern: RegExp) {
+  matches(directory, pattern) {
     const entries = this.directoryEntries.get(directory);
     return entries ? entries.filter(pattern.test, pattern) : [];
-  }
-};
+  }};
+
 
 function buildDirectorySet(files) {
   const directories = new Set();
@@ -75,7 +75,7 @@ function buildDirectorySet(files) {
 
 function buildDirectoryEntries(files) {
   const directoryEntries = new Map();
-  files.forEach(({base, dir}) => {
+  files.forEach((_ref) => {let base = _ref.base,dir = _ref.dir;
     const entries = directoryEntries.get(dir);
     if (entries) {
       entries.push(base);

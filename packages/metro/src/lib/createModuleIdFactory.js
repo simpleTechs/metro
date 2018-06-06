@@ -4,16 +4,16 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
 'use strict';
 
-function createModuleIdFactory(): (path: string) => number {
-  const fileToIdMap: Map<string, number> = new Map();
+function createModuleIdFactory() {
+  const fileToIdMap = new Map();
   let nextId = 0;
-  return (path: string) => {
+  return path => {
     let id = fileToIdMap.get(path);
     if (typeof id !== 'number') {
       id = nextId++;

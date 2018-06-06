@@ -6,20 +6,20 @@
  *
  * @emails oncall+javascript_foundation
  * @format
- * @flow
+ * 
  */
 
 'use strict';
 
 const nullthrows = require('fbjs/lib/nullthrows');
 
-import type {CustomTransformOptions} from '../JSTransformer/worker';
+
 
 const PREFIX = 'transform.';
 
-module.exports = function parseCustomTransformOptions(urlObj: {
-  query?: {[string]: string},
-}): CustomTransformOptions {
+module.exports = function parseCustomTransformOptions(urlObj)
+
+{
   const customTransformOptions = Object.create(null);
   const query = nullthrows(urlObj.query);
 

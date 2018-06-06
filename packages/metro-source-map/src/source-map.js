@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
@@ -13,65 +13,65 @@
 const Generator = require('./Generator');
 const SourceMap = require('source-map');
 
-import type {BabelSourceMap} from 'babel-core';
-import type {BabelSourceMapSegment} from 'babel-generator';
 
-type GeneratedCodeMapping = [number, number];
-type SourceMapping = [number, number, number, number];
-type SourceMappingWithName = [number, number, number, number, string];
 
-export type MetroSourceMapSegmentTuple =
-  | SourceMappingWithName
-  | SourceMapping
-  | GeneratedCodeMapping;
 
-type FBExtensions = {
-  x_facebook_offsets: Array<number>,
-  x_metro_module_paths: Array<string>,
-};
 
-export type IndexMapSection = {
-  map: MetroSourceMap,
-  offset: {line: number, column: number},
-};
 
-export type IndexMap = {
-  file?: string,
-  mappings?: void, // avoids SourceMap being a disjoint union
-  sections: Array<IndexMapSection>,
-  version: number,
-};
 
-export type FBIndexMap = IndexMap & FBExtensions;
-export type MetroSourceMap = IndexMap | BabelSourceMap;
-export type FBSourceMap = FBIndexMap | (BabelSourceMap & FBExtensions);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
- * Creates a source map from modules with "raw mappings", i.e. an array of
- * tuples with either 2, 4, or 5 elements:
- * generated line, generated column, source line, source line, symbol name.
- */
+                                          * Creates a source map from modules with "raw mappings", i.e. an array of
+                                          * tuples with either 2, 4, or 5 elements:
+                                          * generated line, generated column, source line, source line, symbol name.
+                                          */
 function fromRawMappings(
-  modules: $ReadOnlyArray<{
-    +map: ?Array<MetroSourceMapSegmentTuple>,
-    +path: string,
-    +source: string,
-    +code: string,
-  }>,
-): Generator {
+modules)
+
+
+
+
+
+{
   const generator = new Generator();
   let carryOver = 0;
 
   for (var j = 0, o = modules.length; j < o; ++j) {
-    var module = modules[j];
-    var {code, map} = module;
+    var module = modules[j];var
+    code = module.code,map = module.map;
 
     if (Array.isArray(map)) {
       addMappingsForFile(generator, map, module, carryOver);
     } else if (map != null) {
       throw new Error(
-        `Unexpected module with full source map found: ${module.path}`,
-      );
+      `Unexpected module with full source map found: ${module.path}`);
+
     }
 
     carryOver = carryOver + countLines(code);
@@ -81,37 +81,37 @@ function fromRawMappings(
 }
 
 /**
- * Transforms a standard source map object into a Raw Mappings object, to be
- * used across the bundler.
- */
+   * Transforms a standard source map object into a Raw Mappings object, to be
+   * used across the bundler.
+   */
 function toBabelSegments(
-  sourceMap: BabelSourceMap,
-): Array<BabelSourceMapSegment> {
+sourceMap)
+{
   const rawMappings = [];
 
   new SourceMap.SourceMapConsumer(sourceMap).eachMapping(map => {
     rawMappings.push({
       generated: {
         line: map.generatedLine,
-        column: map.generatedColumn,
-      },
+        column: map.generatedColumn },
+
       original: {
         line: map.originalLine,
-        column: map.originalColumn,
-      },
+        column: map.originalColumn },
+
       source: map.source,
-      name: map.name,
-    });
+      name: map.name });
+
   });
 
   return rawMappings;
 }
 
 function toSegmentTuple(
-  mapping: BabelSourceMapSegment,
-): MetroSourceMapSegmentTuple {
-  const {column, line} = mapping.generated;
-  const {name, original} = mapping;
+mapping)
+{var _mapping$generated =
+  mapping.generated;const column = _mapping$generated.column,line = _mapping$generated.line;const
+  name = mapping.name,original = mapping.original;
 
   if (original == null) {
     return [line, column];
@@ -146,15 +146,15 @@ function addMapping(generator, mapping, carryOver) {
     generator.addSourceMapping(line, column, mapping[2], mapping[3]);
   } else if (n === 5) {
     generator.addNamedSourceMapping(
-      line,
-      column,
-      // $FlowIssue #15579526
-      mapping[2],
-      // $FlowIssue #15579526
-      mapping[3],
-      // $FlowIssue #15579526
-      mapping[4],
-    );
+    line,
+    column,
+    // $FlowIssue #15579526
+    mapping[2],
+    // $FlowIssue #15579526
+    mapping[3],
+    // $FlowIssue #15579526
+    mapping[4]);
+
   } else {
     throw new Error(`Invalid mapping: [${mapping.join(', ')}]`);
   }
@@ -165,19 +165,18 @@ function countLines(string) {
 }
 
 function createIndexMap(
-  file: string,
-  sections: Array<IndexMapSection>,
-): IndexMap {
+file,
+sections)
+{
   return {
     version: 3,
     file,
-    sections,
-  };
+    sections };
+
 }
 
 module.exports = {
   createIndexMap,
   fromRawMappings,
   toBabelSegments,
-  toSegmentTuple,
-};
+  toSegmentTuple };

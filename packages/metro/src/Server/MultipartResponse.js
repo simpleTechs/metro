@@ -27,14 +27,14 @@ class MultipartResponse {
     this.headers = {};
 
     res.writeHead(200, {
-      'Content-Type': `multipart/mixed; boundary="${BOUNDARY}"`,
-    });
+      'Content-Type': `multipart/mixed; boundary="${BOUNDARY}"` });
+
     res.write(
-      'If you are seeing this, your client does not support multipart response',
-    );
+    'If you are seeing this, your client does not support multipart response');
+
   }
 
-  writeChunk(headers, data, isLast = false) {
+  writeChunk(headers, data) {let isLast = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     let chunk = `${CRLF}--${BOUNDARY}${CRLF}`;
     if (headers) {
       chunk += MultipartResponse.serializeHeaders(headers) + CRLF + CRLF;
@@ -75,11 +75,11 @@ class MultipartResponse {
   }
 
   static serializeHeaders(headers) {
-    return Object.keys(headers)
-      .map(key => `${key}: ${headers[key]}`)
-      .join(CRLF);
-  }
-}
+    return Object.keys(headers).
+    map(key => `${key}: ${headers[key]}`).
+    join(CRLF);
+  }}
+
 
 function acceptsMultipartResponse(req) {
   return req.headers && req.headers.accept === 'multipart/mixed';

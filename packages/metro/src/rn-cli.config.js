@@ -7,7 +7,7 @@
  * React Native CLI configuration file
  *
  * @format
- * @flow
+ * 
  */
 'use strict';
 
@@ -46,5 +46,4 @@ module.exports = {
 
   getTransformModulePath() {
     return require.resolve('./transformer');
-  },
-};
+  } };

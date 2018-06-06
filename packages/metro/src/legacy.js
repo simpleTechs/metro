@@ -4,132 +4,132 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
-'use strict';
+'use strict';var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};function _asyncToGenerator(fn) {return function () {var gen = fn.apply(this, arguments);return new Promise(function (resolve, reject) {function step(key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {return Promise.resolve(value).then(function (value) {step("next", value);}, function (err) {step("throw", err);});}}return step("next");});};}
 
 const TransformCaching = require('./lib/TransformCaching');
 
 const blacklist = require('./blacklist');
 const debug = require('debug');
-const invariant = require('fbjs/lib/invariant');
+const invariant = require('fbjs/lib/invariant');var _require =
 
-const {Logger} = require('metro-core');
-const {fromRawMappings, toSegmentTuple} = require('metro-source-map');
+require('metro-core');const Logger = _require.Logger;var _require2 =
+require('metro-source-map');const fromRawMappings = _require2.fromRawMappings,toSegmentTuple = _require2.toSegmentTuple;
 
-import type {ConfigT as MetroConfig} from './Config';
-import type Server from './Server';
-import type {TransformCache} from './lib/TransformCaching';
-import type {Options as ServerOptions} from './shared/types.flow';
+
+
+
+
 
 exports.createBlacklist = blacklist;
-exports.sourceMaps = {fromRawMappings, compactMapping: toSegmentTuple};
+exports.sourceMaps = { fromRawMappings, compactMapping: toSegmentTuple };
 exports.createServer = createServer;
 exports.Logger = Logger;
 
-export type ConfigT = MetroConfig;
-type Options = {|
-  ...ServerOptions,
-  // optional types to force flow errors in `toServerOptions`
-  nonPersistent?: ?boolean,
-  transformCache?: ?TransformCache,
-  verbose?: ?boolean,
-  targetBabelVersion?: number,
-|};
 
-type PublicBundleOptions = {
-  +dev?: boolean,
-  +entryFile: string,
-  +inlineSourceMap?: boolean,
-  +minify?: boolean,
-  +platform?: string,
-  +runModule?: boolean,
-  +sourceMapUrl?: string,
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 exports.TransformCaching = TransformCaching;
 
 /**
- * This is a public API, so we don't trust the value and purposefully downgrade
- * it as `mixed`. Because it understands `invariant`, Flow ensure that we
- * refine these values completely.
- */
-function assertPublicBundleOptions(bo: mixed): PublicBundleOptions {
+                                              * This is a public API, so we don't trust the value and purposefully downgrade
+                                              * it as `mixed`. Because it understands `invariant`, Flow ensure that we
+                                              * refine these values completely.
+                                              */
+function assertPublicBundleOptions(bo) {
   invariant(
-    typeof bo === 'object' && bo != null,
-    'bundle options must be an object',
-  );
+  typeof bo === 'object' && bo != null,
+  'bundle options must be an object');
+
   invariant(
-    bo.dev === undefined || typeof bo.dev === 'boolean',
-    'bundle options field `dev` must be a boolean',
-  );
-  const {entryFile} = bo;
+  bo.dev === undefined || typeof bo.dev === 'boolean',
+  'bundle options field `dev` must be a boolean');const
+
+  entryFile = bo.entryFile;
   invariant(
-    typeof entryFile === 'string',
-    'bundle options must contain a string field `entryFile`',
-  );
+  typeof entryFile === 'string',
+  'bundle options must contain a string field `entryFile`');
+
   invariant(
-    bo.inlineSourceMap === undefined || typeof bo.inlineSourceMap === 'boolean',
-    'bundle options field `inlineSourceMap` must be a boolean',
-  );
+  bo.inlineSourceMap === undefined || typeof bo.inlineSourceMap === 'boolean',
+  'bundle options field `inlineSourceMap` must be a boolean');
+
   invariant(
-    bo.minify === undefined || typeof bo.minify === 'boolean',
-    'bundle options field `minify` must be a boolean',
-  );
+  bo.minify === undefined || typeof bo.minify === 'boolean',
+  'bundle options field `minify` must be a boolean');
+
   invariant(
-    bo.platform === undefined || typeof bo.platform === 'string',
-    'bundle options field `platform` must be a string',
-  );
+  bo.platform === undefined || typeof bo.platform === 'string',
+  'bundle options field `platform` must be a string');
+
   invariant(
-    bo.runModule === undefined || typeof bo.runModule === 'boolean',
-    'bundle options field `runModule` must be a boolean',
-  );
+  bo.runModule === undefined || typeof bo.runModule === 'boolean',
+  'bundle options field `runModule` must be a boolean');
+
   invariant(
-    bo.sourceMapUrl === undefined || typeof bo.sourceMapUrl === 'string',
-    'bundle options field `sourceMapUrl` must be a boolean',
-  );
-  return {entryFile, ...bo};
+  bo.sourceMapUrl === undefined || typeof bo.sourceMapUrl === 'string',
+  'bundle options field `sourceMapUrl` must be a boolean');
+
+  return _extends({ entryFile }, bo);
 }
 
-exports.build = async function(
-  options: Options,
-  bundleOptions: PublicBundleOptions,
-): Promise<{code: string, map: string}> {
-  if (options.targetBabelVersion !== undefined) {
-    process.env.BABEL_VERSION = String(options.targetBabelVersion);
-  }
-  var server = createNonPersistentServer(options);
-  const ServerClass = require('./Server');
+exports.build = (() => {var _ref = _asyncToGenerator(function* (
+  options,
+  bundleOptions)
+  {
+    if (options.targetBabelVersion !== undefined) {
+      process.env.BABEL_VERSION = String(options.targetBabelVersion);
+    }
+    var server = createNonPersistentServer(options);
+    const ServerClass = require('./Server');
 
-  const result = await server.build({
-    ...ServerClass.DEFAULT_BUNDLE_OPTIONS,
-    ...assertPublicBundleOptions(bundleOptions),
-    bundleType: 'todo',
-  });
+    const result = yield server.build(_extends({},
+    ServerClass.DEFAULT_BUNDLE_OPTIONS,
+    assertPublicBundleOptions(bundleOptions), {
+      bundleType: 'todo' }));
 
-  server.end();
 
-  return result;
-};
+    server.end();
 
-exports.getOrderedDependencyPaths = async function(
-  options: Options,
-  depOptions: {
-    +entryFile: string,
-    +dev: boolean,
-    +platform: string,
-    +minify: boolean,
-  },
-): Promise<Array<string>> {
-  var server = createNonPersistentServer(options);
+    return result;
+  });return function (_x, _x2) {return _ref.apply(this, arguments);};})();
 
-  const paths = await server.getOrderedDependencyPaths(depOptions);
-  server.end();
+exports.getOrderedDependencyPaths = (() => {var _ref2 = _asyncToGenerator(function* (
+  options,
+  depOptions)
 
-  return paths;
-};
+
+
+
+
+  {
+    var server = createNonPersistentServer(options);
+
+    const paths = yield server.getOrderedDependencyPaths(depOptions);
+    server.end();
+
+    return paths;
+  });return function (_x3, _x4) {return _ref2.apply(this, arguments);};})();
 
 function enableDebug() {
   // Metro Bundler logs debug messages using the 'debug' npm package, and uses
@@ -145,7 +145,7 @@ function enableDebug() {
   debug.enable(debugPattern);
 }
 
-function createServer(options: Options): Server {
+function createServer(options) {
   // the debug module is configured globally, we need to enable debugging
   // *before* requiring any packages that use `debug` for logging
   if (options.verbose) {
@@ -154,19 +154,19 @@ function createServer(options: Options): Server {
 
   // Some callsites may not be Flowified yet.
   invariant(
-    options.assetRegistryPath != null,
-    'createServer() requires assetRegistryPath',
-  );
+  options.assetRegistryPath != null,
+  'createServer() requires assetRegistryPath');
+
 
   const ServerClass = require('./Server');
   return new ServerClass(toServerOptions(options));
 }
 
-function createNonPersistentServer(options: Options): Server {
+function createNonPersistentServer(options) {
   return createServer(options);
 }
 
-function toServerOptions(options: Options): ServerOptions {
+function toServerOptions(options) {
   return {
     assetTransforms: options.assetTransforms,
     assetExts: options.assetExts,
@@ -200,9 +200,9 @@ function toServerOptions(options: Options): ServerOptions {
     transformCache: options.transformCache || TransformCaching.useTempDir(),
     transformModulePath: options.transformModulePath,
     watch:
-      typeof options.watch === 'boolean'
-        ? options.watch
-        : !!options.nonPersistent,
-    workerPath: options.workerPath,
-  };
+    typeof options.watch === 'boolean' ?
+    options.watch :
+    !!options.nonPersistent,
+    workerPath: options.workerPath };
+
 }

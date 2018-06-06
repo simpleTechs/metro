@@ -8,9 +8,9 @@
  */
 'use strict';
 
-const stub = require('sinon/lib/sinon/stub');
+const stub = require('sinon/lib/sinon/stub');var _require =
 
-const {babelGenerate: generate} = require('../babel-bridge');
+require('../babel-bridge');const generate = _require.babelGenerate;
 
 exports.fn = () => {
   const s = stub();
@@ -19,6 +19,6 @@ exports.fn = () => {
   return f;
 };
 
-const generateOptions = {concise: true};
+const generateOptions = { concise: true };
 exports.codeFromAst = ast => generate(ast, generateOptions).code;
 exports.comparableCode = code => code.trim().replace(/\s\s+/g, ' ');

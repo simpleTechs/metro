@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * 
  */
 
 'use strict';
@@ -13,19 +13,19 @@
 const fs = require('fs');
 const serializer = require('jest-serializer');
 
-export type Options = {|
-  path: string,
-  writeDelay: ?number,
-|};
+
+
+
+
 
 class PersistedMapStore {
-  _map: ?Map<string, mixed>;
-  _path: string;
-  _store: () => void;
-  _timeout: ?TimeoutID;
-  _writeDelay: number;
 
-  constructor(options: Options) {
+
+
+
+
+
+  constructor(options) {
     this._path = options.path;
     this._writeDelay = options.writeDelay || 5000;
 
@@ -34,7 +34,7 @@ class PersistedMapStore {
     this._map = null;
   }
 
-  get(key: Buffer): mixed {
+  get(key) {
     this._getMap();
 
     if (this._map) {
@@ -44,7 +44,7 @@ class PersistedMapStore {
     return null;
   }
 
-  set(key: Buffer, value: mixed) {
+  set(key, value) {
     this._getMap();
 
     if (this._map) {
@@ -69,7 +69,7 @@ class PersistedMapStore {
   _store() {
     serializer.writeFileSync(this._path, this._map);
     this._timeout = null;
-  }
-}
+  }}
+
 
 module.exports = PersistedMapStore;

@@ -4,19 +4,19 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
 'use strict';
 
-import typeof {types as BabelTypes} from 'babel-core';
 
-function constantFoldingPlugin(context: {types: BabelTypes}) {
+
+function constantFoldingPlugin(context) {
   const t = context.types;
 
   const Conditional = {
-    exit(path: Object) {
+    exit(path) {
       const node = path.node;
       const test = node.test;
       if (t.isLiteral(test)) {
@@ -26,13 +26,13 @@ function constantFoldingPlugin(context: {types: BabelTypes}) {
           path.remove();
         }
       }
-    },
-  };
+    } };
+
 
   return {
     visitor: {
       BinaryExpression: {
-        exit(path: Object) {
+        exit(path) {
           const node = path.node;
           if (t.isLiteral(node.left) && t.isLiteral(node.right)) {
             const result = path.evaluate();
@@ -40,12 +40,12 @@ function constantFoldingPlugin(context: {types: BabelTypes}) {
               path.replaceWith(t.valueToNode(result.value));
             }
           }
-        },
-      },
+        } },
+
       ConditionalExpression: Conditional,
       IfStatement: Conditional,
       LogicalExpression: {
-        exit(path: Object) {
+        exit(path) {
           const node = path.node;
           const left = node.left;
           if (t.isLiteral(left)) {
@@ -56,18 +56,18 @@ function constantFoldingPlugin(context: {types: BabelTypes}) {
               path.replaceWith(value ? node.right : left);
             }
           }
-        },
-      },
+        } },
+
       UnaryExpression: {
-        exit(path: Object) {
+        exit(path) {
           const node = path.node;
           if (node.operator === '!' && t.isLiteral(node.argument)) {
             path.replaceWith(t.valueToNode(!node.argument.value));
           }
-        },
-      },
-    },
-  };
+        } } } };
+
+
+
 }
 
 module.exports = constantFoldingPlugin;

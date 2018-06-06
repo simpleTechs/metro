@@ -4,24 +4,24 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
-'use strict';
+'use strict';var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};
 
 const nullthrows = require('fbjs/lib/nullthrows');
 const path = require('path');
 
-import type {PackageData} from '../types.flow';
+
 
 module.exports = class Package {
-  data: PackageData;
-  path: string;
-  root: string;
-  type: 'Package';
 
-  constructor(packagePath: string, data: PackageData) {
+
+
+
+
+  constructor(packagePath, data) {
     this.data = data;
     this.path = packagePath;
     this.root = path.dirname(packagePath);
@@ -39,25 +39,25 @@ module.exports = class Package {
 
     if (replacements && typeof replacements === 'object') {
       main =
-        replacements[main] ||
-        replacements[main + '.js'] ||
-        replacements[main + '.json'] ||
-        replacements[main.replace(/(\.js|\.json)$/, '')] ||
-        main;
+      replacements[main] ||
+      replacements[main + '.js'] ||
+      replacements[main + '.json'] ||
+      replacements[main.replace(/(\.js|\.json)$/, '')] ||
+      main;
     }
 
     return path.join(this.root, main);
   }
 
-  getName(): string {
+  getName() {
     return nullthrows(this.data.name);
   }
 
-  isHaste(): boolean {
+  isHaste() {
     return !!this.data.name;
   }
 
-  redirectRequire(name: string) {
+  redirectRequire(name) {
     // Copied from node-haste/Package.js
     const replacements = getReplacements(this.data);
 
@@ -96,8 +96,8 @@ module.exports = class Package {
     }
 
     return name;
-  }
-};
+  }};
+
 
 function getMain(pkg) {
   return pkg.main || 'index';
@@ -117,14 +117,14 @@ function getReplacements(pkg) {
 
   const main = getMain(pkg);
   if (typeof rn !== 'object') {
-    rn = {[main]: rn};
+    rn = { [main]: rn };
   }
 
   if (typeof browser !== 'object') {
-    browser = {[main]: browser};
+    browser = { [main]: browser };
   }
 
   // merge with "browser" as default,
   // "react-native" as override
-  return {...browser, ...rn};
+  return _extends({}, browser, rn);
 }

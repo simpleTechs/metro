@@ -4,40 +4,40 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
-'use strict';
+'use strict';var _require =
 
-const {
-  combineSourceMaps,
-  combineSourceMapsAddingOffsets,
-  joinModules,
-} = require('./util');
 
-import type {RamModule} from '../../../DeltaBundler/Serializers/Serializers';
-import type {ModuleGroups, ModuleTransportLike} from '../../types.flow';
 
-type Params = {|
-  fixWrapperOffset: boolean,
-  lazyModules: $ReadOnlyArray<ModuleTransportLike | RamModule>,
-  moduleGroups: ?ModuleGroups,
-  startupModules: $ReadOnlyArray<ModuleTransportLike | RamModule>,
-|};
 
-module.exports = ({
-  fixWrapperOffset,
-  lazyModules,
-  moduleGroups,
-  startupModules,
-}: Params) => {
-  const options = fixWrapperOffset ? {fixWrapperOffset: true} : undefined;
-  const startupModule: ModuleTransportLike = {
+
+require('./util');const combineSourceMaps = _require.combineSourceMaps,combineSourceMapsAddingOffsets = _require.combineSourceMapsAddingOffsets,joinModules = _require.joinModules;
+
+
+
+
+
+
+
+
+
+
+
+module.exports = (_ref) =>
+
+
+
+
+{let fixWrapperOffset = _ref.fixWrapperOffset,lazyModules = _ref.lazyModules,moduleGroups = _ref.moduleGroups,startupModules = _ref.startupModules;
+  const options = fixWrapperOffset ? { fixWrapperOffset: true } : undefined;
+  const startupModule = {
     code: joinModules(startupModules),
     id: Number.MIN_SAFE_INTEGER,
     map: combineSourceMaps(startupModules, undefined, options),
-    sourcePath: '',
-  };
+    sourcePath: '' };
+
 
   // Add map of module id -> source to sourcemap
   const module_paths = [];
@@ -49,11 +49,11 @@ module.exports = ({
   });
 
   const map = combineSourceMapsAddingOffsets(
-    [startupModule].concat(lazyModules),
-    module_paths,
-    moduleGroups,
-    options,
-  );
+  [startupModule].concat(lazyModules),
+  module_paths,
+  moduleGroups,
+  options);
+
   delete map.x_facebook_offsets[Number.MIN_SAFE_INTEGER];
 
   return map;

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * 
  */
 'use strict';
 
@@ -13,20 +13,20 @@ const mockColor = () => {
   return {
     bold: () => {
       return {};
-    },
-  };
+    } };
+
 };
 
-mockColor.bold = function() {
+mockColor.bold = function () {
   return {};
 };
 
-mockColor.bgRed = function() {
+mockColor.bgRed = function () {
   return {};
 };
 
 module.exports = {
-  dim: <T>(s: T) => s, // (elaborate way of saying "any", fine for this case)
+  dim: s => s, // (elaborate way of saying "any", fine for this case)
   magenta: mockColor,
   white: mockColor,
   blue: mockColor,
@@ -36,5 +36,4 @@ module.exports = {
   red: mockColor,
   cyan: mockColor,
   gray: mockColor,
-  black: mockColor,
-};
+  black: mockColor };

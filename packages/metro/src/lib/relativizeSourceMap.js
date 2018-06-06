@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
@@ -12,12 +12,12 @@
 
 const path = require('path');
 
-import type {MetroSourceMap} from 'metro-source-map';
+
 
 function relativizeSourceMapInline(
-  sourceMap: MetroSourceMap,
-  sourcesRoot: string,
-) {
+sourceMap,
+sourcesRoot)
+{
   if (sourceMap.mappings === undefined) {
     for (let i = 0; i < sourceMap.sections.length; i++) {
       relativizeSourceMapInline(sourceMap.sections[i].map, sourcesRoot);

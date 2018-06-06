@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 'use strict';
@@ -12,14 +12,14 @@
 const EventEmitter = require('eventemitter3');
 
 /**
- * The Hot Module Reloading Client connects to Metro via WebSocket, to receive
- * updates from it and propagate them to the runtime to reflect the changes.
- */
+                                                * The Hot Module Reloading Client connects to Metro via WebSocket, to receive
+                                                * updates from it and propagate them to the runtime to reflect the changes.
+                                                */
 class MetroClient extends EventEmitter {
-  _ws: ?WebSocket;
-  _url: string;
 
-  constructor(url: string) {
+
+
+  constructor(url) {
     super();
     this._url = url;
   }
@@ -45,20 +45,20 @@ class MetroClient extends EventEmitter {
           this.emit('update-start');
           break;
 
-        case 'update':
-          const {modules, sourceMappingURLs, sourceURLs} = data.body;
+        case 'update':var _data$body =
+          data.body;const modules = _data$body.modules,sourceMappingURLs = _data$body.sourceMappingURLs,sourceURLs = _data$body.sourceURLs;
 
           this.emit('update');
-          modules.forEach(({id, code}, i) => {
+          modules.forEach((_ref, i) => {let id = _ref.id,code = _ref.code;
             code += '\n\n' + sourceMappingURLs[i];
 
             // In JSC we need to inject from native for sourcemaps to work
             // (Safari doesn't support `sourceMappingURL` nor any variant when
             // evaluating code) but on Chrome we can simply use eval.
             const injectFunction =
-              typeof global.nativeInjectHMRUpdate === 'function'
-                ? global.nativeInjectHMRUpdate
-                : eval; // eslint-disable-line no-eval
+            typeof global.nativeInjectHMRUpdate === 'function' ?
+            global.nativeInjectHMRUpdate :
+            eval; // eslint-disable-line no-eval
 
             injectFunction(code, sourceURLs[i]);
           });
@@ -73,8 +73,8 @@ class MetroClient extends EventEmitter {
           break;
 
         default:
-          this.emit('error', {type: 'unknown-message', message: data});
-      }
+          this.emit('error', { type: 'unknown-message', message: data });}
+
     };
   }
 
@@ -83,7 +83,7 @@ class MetroClient extends EventEmitter {
       this._ws.close();
       this._ws = undefined;
     }
-  }
-}
+  }}
+
 
 module.exports = MetroClient;

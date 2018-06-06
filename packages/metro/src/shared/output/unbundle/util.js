@@ -4,26 +4,26 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 'use strict';
 
 const invariant = require('fbjs/lib/invariant');
 
-import type {RamModule} from '../../../DeltaBundler/Serializers/Serializers';
-import type {ModuleGroups, ModuleTransportLike} from '../../types.flow';
-import type {BabelSourceMap} from '@babel/core';
-import type {FBIndexMap, IndexMap, MetroSourceMap} from 'metro-source-map';
+
+
+
+
 
 const newline = /\r\n?|\n|\u2028|\u2029/g;
 // fastest implementation
-const countLines = (string: string) => (string.match(newline) || []).length + 1;
+const countLines = string => (string.match(newline) || []).length + 1;
 
 function lineToLineSourceMap(
-  source: string,
-  filename: string = '',
-): BabelSourceMap {
+source)
+
+{let filename = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
   // The first line mapping in our package is the base64vlq code for zeros (A).
   const firstLine = 'AAAA;';
 
@@ -36,59 +36,59 @@ function lineToLineSourceMap(
     mappings: firstLine + Array(countLines(source)).join(line),
     sources: [filename],
     names: [],
-    version: 3,
-  };
+    version: 3 };
+
 }
 
 const wrapperEnd = wrappedCode => wrappedCode.indexOf('{') + 1;
 
-const Section = (line: number, column: number, map: MetroSourceMap) => ({
+const Section = (line, column, map) => ({
   map,
-  offset: {line, column},
-});
+  offset: { line, column } });
 
-type CombineOptions = {fixWrapperOffset: boolean};
+
+
 
 function combineSourceMaps(
-  modules: $ReadOnlyArray<ModuleTransportLike | RamModule>,
-  moduleGroups?: ModuleGroups,
-  options?: ?CombineOptions,
-): IndexMap {
+modules,
+moduleGroups,
+options)
+{
   const sections = combineMaps(modules, null, moduleGroups, options);
-  return {sections, version: 3};
+  return { sections, version: 3 };
 }
 
 function combineSourceMapsAddingOffsets(
-  modules: $ReadOnlyArray<ModuleTransportLike | RamModule>,
-  x_metro_module_paths: Array<string>,
-  moduleGroups?: ?ModuleGroups,
-  options?: ?CombineOptions,
-): FBIndexMap {
+modules,
+x_metro_module_paths,
+moduleGroups,
+options)
+{
   const x_facebook_offsets = [];
   const sections = combineMaps(
-    modules,
-    x_facebook_offsets,
-    moduleGroups,
-    options,
-  );
-  return {sections, version: 3, x_facebook_offsets, x_metro_module_paths};
+  modules,
+  x_facebook_offsets,
+  moduleGroups,
+  options);
+
+  return { sections, version: 3, x_facebook_offsets, x_metro_module_paths };
 }
 
 function combineMaps(
-  modules: $ReadOnlyArray<ModuleTransportLike | RamModule>,
-  offsets: ?Array<number>,
-  moduleGroups,
-  options,
-) {
+modules,
+offsets,
+moduleGroups,
+options)
+{
   const sections = [];
 
   let line = 0;
-  modules.forEach(moduleTransport => {
-    const {code, id, name} = moduleTransport;
+  modules.forEach(moduleTransport => {const
+    code = moduleTransport.code,id = moduleTransport.id,name = moduleTransport.name;
     let column = 0;
     let group;
-    let groupLines = 0;
-    let {map} = moduleTransport;
+    let groupLines = 0;let
+    map = moduleTransport.map;
 
     if (moduleGroups && moduleGroups.modulesInGroups.has(id)) {
       // this is a module appended to another module
@@ -97,13 +97,13 @@ function combineMaps(
 
     if (offsets != null) {
       group = moduleGroups && moduleGroups.groups.get(id);
-      if (group && moduleGroups) {
-        const {modulesById} = moduleGroups;
-        const otherModules: $ReadOnlyArray<ModuleTransportLike> = Array.from(
-          group || [],
-        )
-          .map(moduleId => modulesById.get(moduleId))
-          .filter(Boolean); // needed to appease flow
+      if (group && moduleGroups) {const
+        modulesById = moduleGroups.modulesById;
+        const otherModules = Array.from(
+        group || []).
+
+        map(moduleId => modulesById.get(moduleId)).
+        filter(Boolean); // needed to appease flow
         otherModules.forEach(m => {
           groupLines += countLines(m.code);
         });
@@ -114,12 +114,12 @@ function combineMaps(
     }
 
     invariant(
-      !Array.isArray(map),
-      'Random Access Bundle source maps cannot be built from raw mappings',
-    );
+    !Array.isArray(map),
+    'Random Access Bundle source maps cannot be built from raw mappings');
+
     sections.push(
-      Section(line, column, map || lineToLineSourceMap(code, name)),
-    );
+    Section(line, column, map || lineToLineSourceMap(code, name)));
+
     if (offsets != null && id != null) {
       offsets[id] = line;
       for (const moduleId of group || []) {
@@ -132,13 +132,12 @@ function combineMaps(
   return sections;
 }
 
-const joinModules = (modules: $ReadOnlyArray<{+code: string}>): string =>
-  modules.map(m => m.code).join('\n');
+const joinModules = modules =>
+modules.map(m => m.code).join('\n');
 
 module.exports = {
   combineSourceMaps,
   combineSourceMapsAddingOffsets,
   countLines,
   joinModules,
-  lineToLineSourceMap,
-};
+  lineToLineSourceMap };

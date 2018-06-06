@@ -4,71 +4,71 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
-'use strict';
+'use strict';var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};
 
-const os = require('os');
+const os = require('os');var _require =
 
-const {EventEmitter} = require('events');
+require('events');const EventEmitter = _require.EventEmitter;
 
 const VERSION = require('../../package.json').version;
 
-type ActionLogEntryData = {
-  action_name: string,
-};
 
-type ActionStartLogEntry = {
-  action_name?: string,
-  action_phase?: string,
-  log_entry_label: string,
-  log_session?: string,
-  start_timestamp?: [number, number],
-};
 
-export type LogEntry = {
-  action_name?: string,
-  action_phase?: string,
-  duration_ms?: number,
-  log_entry_label: string,
-  log_session?: string,
-  start_timestamp?: [number, number],
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const log_session = `${os.hostname()}-${Date.now()}`;
 const eventEmitter = new EventEmitter();
 
-function on(event: string, handler: (logEntry: LogEntry) => void): void {
+function on(event, handler) {
   eventEmitter.on(event, handler);
 }
 
-function createEntry(data: LogEntry | string): LogEntry {
-  const logEntry = typeof data === 'string' ? {log_entry_label: data} : data;
+function createEntry(data) {
+  const logEntry = typeof data === 'string' ? { log_entry_label: data } : data;
 
-  return {
-    ...logEntry,
+  return _extends({},
+  logEntry, {
     log_session,
-    metro_bundler_version: VERSION,
-  };
+    metro_bundler_version: VERSION });
+
 }
 
-function createActionStartEntry(data: ActionLogEntryData | string): LogEntry {
-  const logEntry = typeof data === 'string' ? {action_name: data} : data;
-  const {action_name} = logEntry;
+function createActionStartEntry(data) {
+  const logEntry = typeof data === 'string' ? { action_name: data } : data;const
+  action_name = logEntry.action_name;
 
-  return createEntry({
-    ...logEntry,
+  return createEntry(_extends({},
+  logEntry, {
     action_name,
     action_phase: 'start',
     log_entry_label: action_name,
-    start_timestamp: process.hrtime(),
-  });
+    start_timestamp: process.hrtime() }));
+
 }
 
-function createActionEndEntry(logEntry: ActionStartLogEntry): LogEntry {
-  const {action_name, action_phase, start_timestamp} = logEntry;
+function createActionEndEntry(logEntry) {const
+  action_name = logEntry.action_name,action_phase = logEntry.action_phase,start_timestamp = logEntry.start_timestamp;
 
   if (action_phase !== 'start' || !Array.isArray(start_timestamp)) {
     throw new Error('Action has not started or has already ended');
@@ -77,16 +77,16 @@ function createActionEndEntry(logEntry: ActionStartLogEntry): LogEntry {
   const timeDelta = process.hrtime(start_timestamp);
   const duration_ms = Math.round((timeDelta[0] * 1e9 + timeDelta[1]) / 1e6);
 
-  return createEntry({
-    ...logEntry,
+  return createEntry(_extends({},
+  logEntry, {
     action_name,
     action_phase: 'end',
     duration_ms,
-    log_entry_label: action_name,
-  });
+    log_entry_label: action_name }));
+
 }
 
-function log(logEntry: LogEntry): LogEntry {
+function log(logEntry) {
   eventEmitter.emit('log', logEntry);
   return logEntry;
 }
@@ -96,5 +96,4 @@ module.exports = {
   createEntry,
   createActionStartEntry,
   createActionEndEntry,
-  log,
-};
+  log };

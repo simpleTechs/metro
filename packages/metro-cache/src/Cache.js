@@ -4,46 +4,46 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
-'use strict';
+'use strict';function _asyncToGenerator(fn) {return function () {var gen = fn.apply(this, arguments);return new Promise(function (resolve, reject) {function step(key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {return Promise.resolve(value).then(function (value) {step("next", value);}, function (err) {step("throw", err);});}}return step("next");});};}
 
-import type {CacheStore} from 'metro-cache';
 
-class Cache<T> {
-  _stores: $ReadOnlyArray<CacheStore<T>>;
 
-  _hits: WeakMap<Buffer, CacheStore<T>>;
+class Cache {
 
-  constructor(stores: $ReadOnlyArray<CacheStore<T>>) {
+
+
+
+  constructor(stores) {
     this._hits = new WeakMap();
     this._stores = stores;
   }
 
-  async get(key: Buffer): Promise<?T> {
-    const stores = this._stores;
-    const length = stores.length;
+  get(key) {var _this = this;return _asyncToGenerator(function* () {
+      const stores = _this._stores;
+      const length = stores.length;
 
-    for (let i = 0; i < length; i++) {
-      let value = stores[i].get(key);
+      for (let i = 0; i < length; i++) {
+        let value = stores[i].get(key);
 
-      if (value instanceof Promise) {
-        value = await value;
+        if (value instanceof Promise) {
+          value = yield value;
+        }
+
+        if (value != null) {
+          _this._hits.set(key, stores[i]);
+
+          return value;
+        }
       }
 
-      if (value != null) {
-        this._hits.set(key, stores[i]);
-
-        return value;
-      }
-    }
-
-    return null;
+      return null;})();
   }
 
-  set(key: Buffer, value: T): void {
+  set(key, value) {
     const stores = this._stores;
     const stop = this._hits.get(key);
     const length = stores.length;
@@ -58,7 +58,7 @@ class Cache<T> {
         throw err;
       });
     });
-  }
-}
+  }}
+
 
 module.exports = Cache;

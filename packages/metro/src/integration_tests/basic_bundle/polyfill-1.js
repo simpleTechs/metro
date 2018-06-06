@@ -3,7 +3,7 @@
 'use strict';
 
 if (!Object.keys) {
-  Object.keys = function() {
+  Object.keys = function () {
     // Dummy test polyfill.
   };
 }

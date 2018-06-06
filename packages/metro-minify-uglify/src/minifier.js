@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
@@ -12,44 +12,44 @@
 
 const uglify = require('uglify-es');
 
-import type {MetroMinifier} from './types.js.flow';
-import type {ResultWithMap} from './types.js.flow';
-import type {BabelSourceMap} from '@babel/core';
 
-function noSourceMap(code: string): string {
+
+
+
+function noSourceMap(code) {
   return minify(code).code;
 }
 
 function withSourceMap(
-  code: string,
-  sourceMap: ?BabelSourceMap,
-  filename: string,
-): ResultWithMap {
+code,
+sourceMap,
+filename)
+{
   const result = minify(code, sourceMap);
 
-  const map: BabelSourceMap = JSON.parse(result.map);
+  const map = JSON.parse(result.map);
   map.sources = [filename];
-  return {code: result.code, map};
+  return { code: result.code, map };
 }
 
-function minify(inputCode: string, inputMap: ?BabelSourceMap) {
+function minify(inputCode, inputMap) {
   const result = uglify.minify(inputCode, {
-    mangle: {toplevel: true},
+    mangle: { toplevel: true },
     output: {
       ascii_only: true,
       quote_style: 3,
-      wrap_iife: true,
-    },
+      wrap_iife: true },
+
     sourceMap: {
       content: inputMap,
-      includeSources: false,
-    },
+      includeSources: false },
+
     toplevel: true,
     compress: {
       // reduce_funcs inlines single-use function, which cause perf regressions.
-      reduce_funcs: false,
-    },
-  });
+      reduce_funcs: false } });
+
+
 
   if (result.error) {
     throw result.error;
@@ -57,13 +57,13 @@ function minify(inputCode: string, inputMap: ?BabelSourceMap) {
 
   return {
     code: result.code,
-    map: result.map,
-  };
+    map: result.map };
+
 }
 
-const metroMinifier: MetroMinifier = {
+const metroMinifier = {
   noSourceMap,
-  withSourceMap,
-};
+  withSourceMap };
+
 
 module.exports = metroMinifier;

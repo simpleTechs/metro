@@ -4,15 +4,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
 'use strict';
 
-import type {MetroMinifier} from 'metro-minify-uglify';
 
-function getMinifier(minifierPath: string): MetroMinifier {
+
+function getMinifier(minifierPath) {
   // Note: minifierPath should be an absolute path OR a module name here!
   // The options allow relative paths but they HAVE to be normalized at
   // any entry point that accepts them...
@@ -21,11 +21,11 @@ function getMinifier(minifierPath: string): MetroMinifier {
     return require(minifierPath);
   } catch (e) {
     throw new Error(
-      'A problem occurred while trying to fetch the minifier. Path: "' +
-        minifierPath +
-        '", error message: ' +
-        e.message,
-    );
+    'A problem occurred while trying to fetch the minifier. Path: "' +
+    minifierPath +
+    '", error message: ' +
+    e.message);
+
   }
 }
 
