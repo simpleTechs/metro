@@ -60,22 +60,22 @@ require('events');const EventEmitter = _require.EventEmitter;
 const globalCreateModuleId = createModuleIdFactory();
 
 /**
-                                                       * This class is in charge of creating the delta bundle with the actual
-                                                       * transformed source code for each of the modified modules. For each modified
-                                                       * module it returns a `DeltaModule` object that contains the basic information
-                                                       * about that file. Modules that have been deleted contain a `null` module
-                                                       * parameter.
-                                                       *
-                                                       * The actual return format is the following:
-                                                       *
-                                                       *   {
-                                                       *     pre: [{id, module: {}}],   Scripts to be prepended before the actual
-                                                       *                                modules.
-                                                       *     post: [{id, module: {}}],  Scripts to be appended after all the modules
-                                                       *                                (normally the initial require() calls).
-                                                       *     delta: [{id, module: {}}], Actual bundle modules (dependencies).
-                                                       *   }
-                                                       */
+                                                                                                             * This class is in charge of creating the delta bundle with the actual
+                                                                                                             * transformed source code for each of the modified modules. For each modified
+                                                                                                             * module it returns a `DeltaModule` object that contains the basic information
+                                                                                                             * about that file. Modules that have been deleted contain a `null` module
+                                                                                                             * parameter.
+                                                                                                             *
+                                                                                                             * The actual return format is the following:
+                                                                                                             *
+                                                                                                             *   {
+                                                                                                             *     pre: [{id, module: {}}],   Scripts to be prepended before the actual
+                                                                                                             *                                modules.
+                                                                                                             *     post: [{id, module: {}}],  Scripts to be appended after all the modules
+                                                                                                             *                                (normally the initial require() calls).
+                                                                                                             *     delta: [{id, module: {}}], Actual bundle modules (dependencies).
+                                                                                                             *   }
+                                                                                                             */
 class DeltaTransformer extends EventEmitter {
 
 

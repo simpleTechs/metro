@@ -116,12 +116,12 @@ platform)
 
 
 /**
-   * Resolve any kind of module path, whether it's a file or a directory.
-   * For example we may want to resolve './foobar'. The closest
-   * `package.json` may define a redirection for this path, for example
-   * `/smth/lib/foobar`, that may be further resolved to
-   * `/smth/lib/foobar/index.ios.js`.
-   */
+       * Resolve any kind of module path, whether it's a file or a directory.
+       * For example we may want to resolve './foobar'. The closest
+       * `package.json` may define a redirection for this path, for example
+       * `/smth/lib/foobar`, that may be further resolved to
+       * `/smth/lib/foobar/index.ios.js`.
+       */
 function resolveModulePath(
 context,
 toModuleName,
@@ -156,10 +156,10 @@ platform)
 
 
 /**
-   * Resolve a module as a Haste module or package. For example we might try to
-   * resolve `Foo`, that is provided by file `/smth/Foo.js`. Or, in the case of
-   * a Haste package, it could be `/smth/Foo/index.js`.
-   */
+       * Resolve a module as a Haste module or package. For example we might try to
+       * resolve `Foo`, that is provided by file `/smth/Foo.js`. Or, in the case of
+       * a Haste package, it could be `/smth/Foo/index.js`.
+       */
 function resolveHasteName(
 context,
 moduleName,
@@ -228,11 +228,11 @@ class MissingFileInHastePackageError extends Error {
 
 
 /**
-      * In the NodeJS-style module resolution scheme we want to check potential
-      * paths both as directories and as files. For example, `/foo/bar` may resolve
-      * to `/foo/bar.js` (preferred), but it might also be `/foo/bar/index.js`, or
-      * even a package directory.
-      */
+                * In the NodeJS-style module resolution scheme we want to check potential
+                * paths both as directories and as files. For example, `/foo/bar` may resolve
+                * to `/foo/bar.js` (preferred), but it might also be `/foo/bar/index.js`, or
+                * even a package directory.
+                */
 function resolveFileOrDir(
 context,
 potentialModulePath,
@@ -252,15 +252,15 @@ platform)
 }
 
 /**
-   * Try to resolve a potential path as if it was a directory-based module.
-   * Either this is a directory that contains a package, or that the directory
-   * contains an index file. If it fails to resolve these options, it returns
-   * `null` and fills the array of `candidates` that were tried.
-   *
-   * For example we could try to resolve `/foo/bar`, that would eventually
-   * resolve to `/foo/bar/lib/index.ios.js` if we're on platform iOS and that
-   * `bar` contains a package which entry point is `./lib/index` (or `./lib`).
-   */
+       * Try to resolve a potential path as if it was a directory-based module.
+       * Either this is a directory that contains a package, or that the directory
+       * contains an index file. If it fails to resolve these options, it returns
+       * `null` and fills the array of `candidates` that were tried.
+       *
+       * For example we could try to resolve `/foo/bar`, that would eventually
+       * resolve to `/foo/bar/lib/index.ios.js` if we're on platform iOS and that
+       * `bar` contains a package which entry point is `./lib/index` (or `./lib`).
+       */
 function resolveDir(
 context,
 potentialDirPath,
@@ -275,12 +275,12 @@ platform)
 }
 
 /**
-   * Resolve the main module of a package that we know exist. The resolution
-   * itself cannot fail because we already resolved the path to the package.
-   * If the `main` of the package is invalid, this is not a resolution failure,
-   * this means the package is invalid, and should purposefully stop the
-   * resolution process altogether.
-   */
+       * Resolve the main module of a package that we know exist. The resolution
+       * itself cannot fail because we already resolved the path to the package.
+       * If the `main` of the package is invalid, this is not a resolution failure,
+       * this means the package is invalid, and should purposefully stop the
+       * resolution process altogether.
+       */
 function resolvePackage(
 context,
 packageJsonPath,
@@ -306,19 +306,10 @@ platform)
 }
 
 /**
-   * Given a directory path and the base asset name, return a list of all the
-   * asset file names that match the given base name in that directory. Return
-   * null if there's no such named asset. `platform` is used to identify
-   * platform-specific assets, ex. `foo.ios.js` instead of a generic `foo.js`.
-   */
-
-
-
-
-
-
-/**
-       * Check existence of a single file.
+       * Given a directory path and the base asset name, return a list of all the
+       * asset file names that match the given base name in that directory. Return
+       * null if there's no such named asset. `platform` is used to identify
+       * platform-specific assets, ex. `foo.ios.js` instead of a generic `foo.js`.
        */
 
 
@@ -326,6 +317,15 @@ platform)
 
 
 
+/**
+                         * Check existence of a single file.
+                         */
+
+
+
+
+
+
 
 
 
@@ -333,14 +333,14 @@ platform)
 
 
 /**
-           * Given a file name for a particular directory, return a resolution result
-           * depending on whether or not we found the corresponding module as a file. For
-           * example, we might ask for `foo.png`, that resolves to
-           * `['/js/beep/foo.ios.png']`. Or we may ask for `boop`, that resolves to
-           * `/js/boop.android.ts`. On the other hand this function does not resolve
-           * directory-based module names: for example `boop` will not resolve to
-           * `/js/boop/index.js` (see `_loadAsDir` for that).
-           */
+                                                         * Given a file name for a particular directory, return a resolution result
+                                                         * depending on whether or not we found the corresponding module as a file. For
+                                                         * example, we might ask for `foo.png`, that resolves to
+                                                         * `['/js/beep/foo.ios.png']`. Or we may ask for `boop`, that resolves to
+                                                         * `/js/boop.android.ts`. On the other hand this function does not resolve
+                                                         * directory-based module names: for example `boop` will not resolve to
+                                                         * `/js/boop/index.js` (see `_loadAsDir` for that).
+                                                         */
 function resolveFile(
 context,
 dirPath,
@@ -372,15 +372,15 @@ platform)
 
 
 /**
-   * A particular 'base path' can resolve to a number of possibilities depending
-   * on the context. For example `foo/bar` could resolve to `foo/bar.ios.js`, or
-   * to `foo/bar.js`. If can also resolve to the bare path `foo/bar` itself, as
-   * supported by Node.js resolution. On the other hand it doesn't support
-   * `foo/bar.ios`, for historical reasons.
-   *
-   * Return the full path of the resolved module, `null` if no resolution could
-   * be found.
-   */
+       * A particular 'base path' can resolve to a number of possibilities depending
+       * on the context. For example `foo/bar` could resolve to `foo/bar.ios.js`, or
+       * to `foo/bar.js`. If can also resolve to the bare path `foo/bar` itself, as
+       * supported by Node.js resolution. On the other hand it doesn't support
+       * `foo/bar.ios`, for historical reasons.
+       *
+       * Return the full path of the resolved module, `null` if no resolution could
+       * be found.
+       */
 function resolveSourceFile(
 context,
 platform)
@@ -405,10 +405,10 @@ platform)
 
 
 /**
-   * For a particular extension, ex. `js`, we want to try a few possibilities,
-   * such as `foo.ios.js`, `foo.native.js`, and of course `foo.js`. Return the
-   * full path of the resolved module, `null` if no resolution could be found.
-   */
+       * For a particular extension, ex. `js`, we want to try a few possibilities,
+       * such as `foo.ios.js`, `foo.native.js`, and of course `foo.js`. Return the
+       * full path of the resolved module, `null` if no resolution could be found.
+       */
 function resolveSourceFileForAllExts(
 context,
 sourceExt,
@@ -438,9 +438,9 @@ platform)
 
 
 /**
-   * We try to resolve a single possible extension. If it doesn't exist, then
-   * we make sure to add the extension to a list of candidates for reporting.
-   */
+       * We try to resolve a single possible extension. If it doesn't exist, then
+       * we make sure to add the extension to a list of candidates for reporting.
+       */
 function resolveSourceFileForExt(
 context,
 extension)
@@ -454,9 +454,9 @@ extension)
 }
 
 /**
-   * Find all the asset files corresponding to the file base name, and return
-   * it wrapped as a resolution result.
-   */
+       * Find all the asset files corresponding to the file base name, and return
+       * it wrapped as a resolution result.
+       */
 function resolveAssetFiles(
 resolveAsset,
 dirPath,

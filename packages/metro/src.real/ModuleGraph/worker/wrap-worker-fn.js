@@ -5,28 +5,28 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * 
  */
 
 'use strict';
 
 const fs = require('fs');
-const mkdirp = require('mkdirp');
+const mkdirp = require('mkdirp');var _require =
 
-const {dirname} = require('path');
+require('path');const dirname = _require.dirname;
 
-type Path = string;
-type WorkerFn<Options> = (fileContents: Buffer, options: Options) => mixed;
-export type WorkerFnWithIO<Options> = (
-  infile: Path,
-  outfile: Path,
-  options: Options,
-) => void;
 
-function wrapWorkerFn<Options>(
-  workerFunction: WorkerFn<Options>,
-): WorkerFnWithIO<Options> {
-  return (infile: Path, outfile: Path, options: Options) => {
+
+
+
+
+
+
+
+function wrapWorkerFn(
+workerFunction)
+{
+  return (infile, outfile, options) => {
     const contents = fs.readFileSync(infile);
     const result = workerFunction(contents, options);
     mkdirp.sync(dirname(outfile));

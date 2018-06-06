@@ -49,7 +49,7 @@ optimizationOptions)
   const result = _extends({}, details, { transformed: {} });const
   postMinifyProcess = optimizationOptions.postMinifyProcess;
 
-  Object.entries(transformed).forEach((_ref) => {var _ref2 = _slicedToArray(_ref, 2);let k = _ref2[0],t = _ref2[1];
+  Object.entries(transformed).forEach(_ref => {var _ref2 = _slicedToArray(_ref, 2);let k = _ref2[0],t = _ref2[1];
     const optimized = optimize(t, file, optimizationOptions);
     const processed = postMinifyProcess({
       code: optimized.code,

@@ -21,7 +21,7 @@ require('./babel-bridge');const transformSync = _require.transformSync;
 
 
 
-module.exports.transform = (_ref) => {let filename = _ref.filename,options = _ref.options,plugins = _ref.plugins,src = _ref.src;
+module.exports.transform = _ref => {let filename = _ref.filename,options = _ref.options,plugins = _ref.plugins,src = _ref.src;
   const OLD_BABEL_ENV = process.env.BABEL_ENV;
   process.env.BABEL_ENV = options.dev ? 'development' : 'production';
 

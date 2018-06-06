@@ -34,10 +34,10 @@ require('babel-preset-react-native/package.json').version];
 
 
 /**
-                                                             * Return a memoized function that checks for the existence of a
-                                                             * project level .babelrc file, and if it doesn't exist, reads the
-                                                             * default RN babelrc file and uses that.
-                                                             */
+                                                                                                                         * Return a memoized function that checks for the existence of a
+                                                                                                                         * project level .babelrc file, and if it doesn't exist, reads the
+                                                                                                                         * default RN babelrc file and uses that.
+                                                                                                                         */
 const getBabelRC = function () {
   let babelRC = null;
 
@@ -76,9 +76,9 @@ const getBabelRC = function () {
 }();
 
 /**
-      * Given a filename and options, build a Babel
-      * config object with the appropriate plugins.
-      */
+           * Given a filename and options, build a Babel
+           * config object with the appropriate plugins.
+           */
 function buildBabelConfig(filename, options) {let plugins = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
   const babelRC = getBabelRC(options.projectRoot);
 

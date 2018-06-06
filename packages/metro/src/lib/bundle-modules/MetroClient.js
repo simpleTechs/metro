@@ -12,9 +12,9 @@
 const EventEmitter = require('eventemitter3');
 
 /**
-                                                * The Hot Module Reloading Client connects to Metro via WebSocket, to receive
-                                                * updates from it and propagate them to the runtime to reflect the changes.
-                                                */
+                                                                                               * The Hot Module Reloading Client connects to Metro via WebSocket, to receive
+                                                                                               * updates from it and propagate them to the runtime to reflect the changes.
+                                                                                               */
 class MetroClient extends EventEmitter {
 
 

@@ -13,8 +13,8 @@
 
 
 /**
-               * Returns the options needed to create a RAM bundle.
-               */let getRamOptions = (() => {var _ref = _asyncToGenerator(
+                             * Returns the options needed to create a RAM bundle.
+                             */let getRamOptions = (() => {var _ref = _asyncToGenerator(
   function* (
   entryFile,
   options,

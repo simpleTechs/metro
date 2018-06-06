@@ -110,9 +110,9 @@ class ModuleCache {
   getAssetModule(filePath) {
     if (!this._moduleCache[filePath]) {
       /* FixMe: AssetModule does not need all these options. This is because
-                                        * this is an incorrect OOP design in the first place: AssetModule, being
-                                        * simpler than a normal Module, should not inherit the Module class.
-                                        */
+                                                                         * this is an incorrect OOP design in the first place: AssetModule, being
+                                                                         * simpler than a normal Module, should not inherit the Module class.
+                                                                         */
       this._moduleCache[filePath] = new AssetModule({
         depGraphHelpers: this._depGraphHelpers,
         experimentalCaches: this._experimentalCaches,

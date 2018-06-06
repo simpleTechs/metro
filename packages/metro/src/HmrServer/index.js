@@ -32,14 +32,14 @@ require('metro-core'),_require$Logger = _require.Logger;const createActionStartE
 
 
 /**
-                                                                                                                                                                                                                      * The HmrServer (Hot Module Reloading) implements a lightweight interface
-                                                                                                                                                                                                                      * to communicate easily to the logic in the React Native repository (which
-                                                                                                                                                                                                                      * is the one that handles the Web Socket connections).
-                                                                                                                                                                                                                      *
-                                                                                                                                                                                                                      * This interface allows the HmrServer to hook its own logic to WS clients
-                                                                                                                                                                                                                      * getting connected, disconnected or having errors (through the
-                                                                                                                                                                                                                      * `onClientConnect`, `onClientDisconnect` and `onClientError` methods).
-                                                                                                                                                                                                                      */
+                                                                                                                                                                                                                                                                                                                                                                                                                                           * The HmrServer (Hot Module Reloading) implements a lightweight interface
+                                                                                                                                                                                                                                                                                                                                                                                                                                           * to communicate easily to the logic in the React Native repository (which
+                                                                                                                                                                                                                                                                                                                                                                                                                                           * is the one that handles the Web Socket connections).
+                                                                                                                                                                                                                                                                                                                                                                                                                                           *
+                                                                                                                                                                                                                                                                                                                                                                                                                                           * This interface allows the HmrServer to hook its own logic to WS clients
+                                                                                                                                                                                                                                                                                                                                                                                                                                           * getting connected, disconnected or having errors (through the
+                                                                                                                                                                                                                                                                                                                                                                                                                                           * `onClientConnect`, `onClientDisconnect` and `onClientError` methods).
+                                                                                                                                                                                                                                                                                                                                                                                                                                           */
 class HmrServer {
 
 
@@ -154,32 +154,32 @@ class HmrServer {
   }
 
   /**
-     * We need to add the inverse dependencies of that specific module into
-     * the define() call, to make the HMR logic in the client able to propagate
-     * the changes to the module dependants, if needed.
-     *
-     * To do so, we need to append the inverse dependencies object as the last
-     * parameter to the __d() call from the code that we get from the bundler.
-     *
-     * So, we need to transform this:
-     *
-     *   __d(
-     *     function(global, ...) { (module transformed code) },
-     *     moduleId,
-     *     dependencyMap?,
-     *     moduleName?
-     *   );
-     *
-     * Into this:
-     *
-     *   __d(
-     *     function(global, ...) { (module transformed code) },
-     *     moduleId,
-     *     dependencyMap?,
-     *     moduleName?,
-     *     inverseDependencies,
-     *   );
-     */
+       * We need to add the inverse dependencies of that specific module into
+       * the define() call, to make the HMR logic in the client able to propagate
+       * the changes to the module dependants, if needed.
+       *
+       * To do so, we need to append the inverse dependencies object as the last
+       * parameter to the __d() call from the code that we get from the bundler.
+       *
+       * So, we need to transform this:
+       *
+       *   __d(
+       *     function(global, ...) { (module transformed code) },
+       *     moduleId,
+       *     dependencyMap?,
+       *     moduleName?
+       *   );
+       *
+       * Into this:
+       *
+       *   __d(
+       *     function(global, ...) { (module transformed code) },
+       *     moduleId,
+       *     dependencyMap?,
+       *     moduleName?,
+       *     inverseDependencies,
+       *   );
+       */
   _prepareModule(
   id,
   code,
@@ -196,11 +196,11 @@ class HmrServer {
   }
 
   /**
-     * Instead of adding the whole inverseDependncies object into each changed
-     * module (which can be really huge if the dependency graph is big), we only
-     * add the needed inverseDependencies for each changed module (we do this by
-     * traversing upwards the dependency graph).
-     */
+       * Instead of adding the whole inverseDependncies object into each changed
+       * module (which can be really huge if the dependency graph is big), we only
+       * add the needed inverseDependencies for each changed module (we do this by
+       * traversing upwards the dependency graph).
+       */
   _addInverseDep(
   module,
   inverseDependencies,

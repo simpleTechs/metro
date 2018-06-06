@@ -28,11 +28,11 @@ const DeltaTransformer = require('./DeltaTransformer');
 
 
 /**
-                                                         * `DeltaBundler` uses the `DeltaTransformer` to build bundle deltas. This
-                                                         * module handles all the transformer instances so it can support multiple
-                                                         * concurrent clients requesting their own deltas. This is done through the
-                                                         * `clientId` param (which maps a client to a specific delta transformer).
-                                                         */
+                                                                                                                 * `DeltaBundler` uses the `DeltaTransformer` to build bundle deltas. This
+                                                                                                                 * module handles all the transformer instances so it can support multiple
+                                                                                                                 * concurrent clients requesting their own deltas. This is done through the
+                                                                                                                 * `clientId` param (which maps a client to a specific delta transformer).
+                                                                                                                 */
 class DeltaBundler {
 
 

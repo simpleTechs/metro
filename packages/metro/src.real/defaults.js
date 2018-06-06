@@ -4,42 +4,42 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 'use strict';
 
 exports.assetExts = [
-  // Image formats
-  'bmp',
-  'gif',
-  'jpg',
-  'jpeg',
-  'png',
-  'psd',
-  'svg',
-  'webp',
-  // Video formats
-  'm4v',
-  'mov',
-  'mp4',
-  'mpeg',
-  'mpg',
-  'webm',
-  // Audio formats
-  'aac',
-  'aiff',
-  'caf',
-  'm4a',
-  'mp3',
-  'wav',
-  // Document formats
-  'html',
-  'pdf',
-  // Font formats
-  'otf',
-  'ttf',
-];
+// Image formats
+'bmp',
+'gif',
+'jpg',
+'jpeg',
+'png',
+'psd',
+'svg',
+'webp',
+// Video formats
+'m4v',
+'mov',
+'mp4',
+'mpeg',
+'mpg',
+'webm',
+// Audio formats
+'aac',
+'aiff',
+'caf',
+'m4a',
+'mp3',
+'wav',
+// Document formats
+'html',
+'pdf',
+// Font formats
+'otf',
+'ttf'];
+
 
 exports.sourceExts = ['js', 'json'];
 

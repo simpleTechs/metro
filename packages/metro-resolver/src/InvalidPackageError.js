@@ -28,12 +28,12 @@ class InvalidPackageError extends Error {
 
 
   /**
-                                          * The module path prefix we where trying to resolve. For example './beep'.
-                                          */ /**
-                                              * The file candidates we tried to find to resolve the `main` field of the
-                                              * package. Ex. `/js/foo/beep(.js|.json)?` if `main` is specifying `./beep`
-                                              * as the entry point.
-                                              */
+                                                                                                                        * The module path prefix we where trying to resolve. For example './beep'.
+                                                                                                                        */ /**
+                                                                                                                            * The file candidates we tried to find to resolve the `main` field of the
+                                                                                                                            * package. Ex. `/js/foo/beep(.js|.json)?` if `main` is specifying `./beep`
+                                                                                                                            * as the entry point.
+                                                                                                                            */
 
 
 

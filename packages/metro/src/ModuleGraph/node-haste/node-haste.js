@@ -62,7 +62,7 @@ const NULL_MODULE = {
 
 
 // This function maps the ModuleGraph data structure to jest-haste-map's ModuleMap
-const createModuleMap = (_ref) => {let files = _ref.files,helpers = _ref.helpers,moduleCache = _ref.moduleCache,sourceExts = _ref.sourceExts;
+const createModuleMap = _ref => {let files = _ref.files,helpers = _ref.helpers,moduleCache = _ref.moduleCache,sourceExts = _ref.sourceExts;
   const map = Object.create(null);
   files.forEach(filePath => {
     if (helpers.isNodeModulesDir(filePath)) {

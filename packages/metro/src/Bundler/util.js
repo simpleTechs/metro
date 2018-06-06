@@ -87,10 +87,10 @@ assetDescriptor)
 }
 
 /**
-   * Generates the code involved in requiring an asset, but to be loaded remotely.
-   * If the asset cannot be found within the map, then it falls back to the
-   * standard asset.
-   */
+     * Generates the code involved in requiring an asset, but to be loaded remotely.
+     * If the asset cannot be found within the map, then it falls back to the
+     * standard asset.
+     */
 function generateRemoteAssetCodeFileAst(
 assetSourceResolverPath,
 assetDescriptor,
@@ -217,7 +217,7 @@ subtree)
     }
 
     // find all module IDs that are part of more than one group
-    const doubles = filter(all, (_ref3) => {var _ref4 = _slicedToArray(_ref3, 2);let parents = _ref4[1];return parents.length > 1;});
+    const doubles = filter(all, _ref3 => {var _ref4 = _slicedToArray(_ref3, 2);let parents = _ref4[1];return parents.length > 1;});
     for (const _ref5 of doubles) {var _ref6 = _slicedToArray(_ref5, 2);const moduleId = _ref6[0];const parents = _ref6[1];
       const parentNames = parents.map(byId.get, byId);
       const lastName = parentNames.pop();

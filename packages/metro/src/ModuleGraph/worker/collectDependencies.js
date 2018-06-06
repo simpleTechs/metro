@@ -39,13 +39,13 @@ require('../../babel-bridge');const generate = _require4.babelGenerate;
 
 
 /**
-                                                                         * Transform all the calls to `require()` and `import()` in a file into ID-
-                                                                         * independent code, and return the list of dependencies. For example, a call
-                                                                         * like `require('Foo')` could be transformed to `require(_depMap[3], 'Foo')`
-                                                                         * where `_depMap` is provided by the outer scope. As such, we don't need to
-                                                                         * know the actual module ID. The second argument is only provided for debugging
-                                                                         * purposes.
-                                                                         */
+                                                                                                                                                 * Transform all the calls to `require()` and `import()` in a file into ID-
+                                                                                                                                                 * independent code, and return the list of dependencies. For example, a call
+                                                                                                                                                 * like `require('Foo')` could be transformed to `require(_depMap[3], 'Foo')`
+                                                                                                                                                 * where `_depMap` is provided by the outer scope. As such, we don't need to
+                                                                                                                                                 * know the actual module ID. The second argument is only provided for debugging
+                                                                                                                                                 * purposes.
+                                                                                                                                                 */
 function collectDependencies(
 ast,
 options)
@@ -135,9 +135,9 @@ const makeDynamicRequireReplacement = babelTemplate(
 
 
 /**
-                                                                         * Extract the module name from `require` arguments. We support template
-                                                                         * literal, for example one could write `require(`foo`)`.
-                                                                         */
+                                                                                                                                                 * Extract the module name from `require` arguments. We support template
+                                                                                                                                                 * literal, for example one could write `require(`foo`)`.
+                                                                                                                                                 */
 function getModuleNameFromCallArgs(type, node, path) {
   if (node.arguments.length !== 1) {
     throw invalidRequireOf(type, node);
@@ -155,11 +155,11 @@ function getModuleNameFromCallArgs(type, node, path) {
 }
 
 /**
-   * For each different module being required, we assign it an index in the
-   * "dependency map". If we encounter the same module twice, it gets the same
-   * index. A module required both asynchronously and synchronously is marked
-   * as not being async.
-   */
+     * For each different module being required, we assign it an index in the
+     * "dependency map". If we encounter the same module twice, it gets the same
+     * index. A module required both asynchronously and synchronously is marked
+     * as not being async.
+     */
 function assignDependencyIndex(
 context,
 name,

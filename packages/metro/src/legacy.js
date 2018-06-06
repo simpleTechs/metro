@@ -52,10 +52,10 @@ exports.Logger = Logger;
 exports.TransformCaching = TransformCaching;
 
 /**
-                                              * This is a public API, so we don't trust the value and purposefully downgrade
-                                              * it as `mixed`. Because it understands `invariant`, Flow ensure that we
-                                              * refine these values completely.
-                                              */
+                                                                                           * This is a public API, so we don't trust the value and purposefully downgrade
+                                                                                           * it as `mixed`. Because it understands `invariant`, Flow ensure that we
+                                                                                           * refine these values completely.
+                                                                                           */
 function assertPublicBundleOptions(bo) {
   invariant(
   typeof bo === 'object' && bo != null,

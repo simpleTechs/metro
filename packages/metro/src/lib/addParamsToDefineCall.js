@@ -11,11 +11,11 @@
 'use strict';
 
 /**
-               * Simple way of adding additional parameters to the end of the define calls.
-               *
-               * This is used to add extra information to the generaic compiled modules (like
-               * the dependencyMap object or the list of inverse dependencies).
-               */
+                             * Simple way of adding additional parameters to the end of the define calls.
+                             *
+                             * This is used to add extra information to the generaic compiled modules (like
+                             * the dependencyMap object or the list of inverse dependencies).
+                             */
 function addParamsToDefineCall(
 code)
 

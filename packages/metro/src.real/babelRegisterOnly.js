@@ -13,23 +13,23 @@ require('./setupNodePolyfills');
 var _only = [];
 
 const PLUGINS = [
-  'transform-flow-strip-types',
-  'transform-object-rest-spread',
-  'transform-class-properties',
-];
+'transform-flow-strip-types',
+'transform-object-rest-spread',
+'transform-class-properties'];
+
 
 if (/^v[0-7]\./.test(process.version)) {
   PLUGINS.push(
-    'transform-async-to-generator',
-    'syntax-trailing-function-commas',
-  );
+  'transform-async-to-generator',
+  'syntax-trailing-function-commas');
+
 }
 
 function registerOnly(onlyList) {
   // This prevents `babel-register` from transforming the code of the
   // plugins/presets that we are require-ing themselves before setting up the
   // actual config.
-  require('babel-register')({only: [], babelrc: false});
+  require('babel-register')({ only: [], babelrc: false });
   require('babel-register')(config(onlyList));
 }
 
@@ -41,8 +41,8 @@ function config(onlyList) {
     only: _only,
     retainLines: true,
     sourceMaps: 'inline',
-    babelrc: false,
-  };
+    babelrc: false };
+
 }
 
 module.exports = registerOnly;

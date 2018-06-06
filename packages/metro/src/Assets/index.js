@@ -282,8 +282,8 @@
   });return function applyAssetDataPlugins(_x16, _x17) {return _ref8.apply(this, arguments);};})();
 
 /**
-                                                                                                     * Returns all the associated files (for different resolutions) of an asset.
-                                                                                                     **/let getAssetFiles = (() => {var _ref9 = _asyncToGenerator(
+                                                                                                                                                                                                         * Returns all the associated files (for different resolutions) of an asset.
+                                                                                                                                                                                                         **/let getAssetFiles = (() => {var _ref9 = _asyncToGenerator(
   function* (
   assetPath)
 
@@ -294,17 +294,17 @@
   });return function getAssetFiles(_x18) {return _ref9.apply(this, arguments);};})();
 
 /**
-                                                                                       * Return a buffer with the actual image given a request for an image by path.
-                                                                                       * The relativePath can contain a resolution postfix, in this case we need to
-                                                                                       * find that image (or the closest one to it's resolution) in one of the
-                                                                                       * project roots:
-                                                                                       *
-                                                                                       * 1. We first parse the directory of the asset
-                                                                                       * 2. We check to find a matching directory in one of the project roots
-                                                                                       * 3. We then build a map of all assets and their scales in this directory
-                                                                                       * 4. Then try to pick platform-specific asset records
-                                                                                       * 5. Then pick the closest resolution (rounding up) to the requested one
-                                                                                       */let getAsset = (() => {var _ref10 = _asyncToGenerator(
+                                                                                                                                                                             * Return a buffer with the actual image given a request for an image by path.
+                                                                                                                                                                             * The relativePath can contain a resolution postfix, in this case we need to
+                                                                                                                                                                             * find that image (or the closest one to it's resolution) in one of the
+                                                                                                                                                                             * project roots:
+                                                                                                                                                                             *
+                                                                                                                                                                             * 1. We first parse the directory of the asset
+                                                                                                                                                                             * 2. We check to find a matching directory in one of the project roots
+                                                                                                                                                                             * 3. We then build a map of all assets and their scales in this directory
+                                                                                                                                                                             * 4. Then try to pick platform-specific asset records
+                                                                                                                                                                             * 5. Then pick the closest resolution (rounding up) to the requested one
+                                                                                                                                                                             */let getAsset = (() => {var _ref10 = _asyncToGenerator(
   function* (
   relativePath,
   projectRoots)

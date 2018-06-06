@@ -25,7 +25,7 @@ require('./util');const combineSourceMaps = _require.combineSourceMaps,combineSo
 
 
 
-module.exports = (_ref) =>
+module.exports = _ref =>
 
 
 

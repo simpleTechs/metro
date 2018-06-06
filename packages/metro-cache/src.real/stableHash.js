@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
@@ -12,7 +12,7 @@
 
 const crypto = require('crypto');
 
-function canonicalize(key: string, value: mixed): mixed {
+function canonicalize(key, value) {
   if (!(value instanceof Object) || value instanceof Array) {
     return value;
   }
@@ -28,11 +28,11 @@ function canonicalize(key: string, value: mixed): mixed {
   return object;
 }
 
-function stableHash(value: mixed) {
-  return crypto
-    .createHash('md4')
-    .update(JSON.stringify(value, canonicalize))
-    .digest();
+function stableHash(value) {
+  return crypto.
+  createHash('md4').
+  update(JSON.stringify(value, canonicalize)).
+  digest();
 }
 
 module.exports = stableHash;

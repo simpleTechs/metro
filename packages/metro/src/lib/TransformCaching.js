@@ -62,8 +62,8 @@ const CACHE_SUB_DIR = 'cache';
 
 
 /**
-                                * The API that should be exposed for a transform cache.
-                                */
+                                                               * The API that should be exposed for a transform cache.
+                                                               */
 
 
 
@@ -80,11 +80,11 @@ class FileBasedCache {
 
 
   /**
-                       * The root path is where the data will be stored. It shouldn't contain
-                       * other files other than the cache's own files, so it should start empty
-                       * when Metro Bundler is first run. When doing a cache reset, it may be
-                       * completely deleted.
-                       */
+                                           * The root path is where the data will be stored. It shouldn't contain
+                                           * other files other than the cache's own files, so it should start empty
+                                           * when Metro Bundler is first run. When doing a cache reset, it may be
+                                           * completely deleted.
+                                           */
   constructor(rootPath) {
     this._cacheWasReset = false;
     invariant(
@@ -98,20 +98,20 @@ class FileBasedCache {
   }
 
   /**
-     * We store the transformed JS because it is likely to be much bigger than the
-     * rest of the data JSON. Probably the map should be stored separately as
-     * well.
-     *
-     * We make the write operation as much atomic as possible: indeed, if another
-     * process is reading the cache at the same time, there would be a risk it
-     * reads new transformed code, but old metadata. This is avoided by removing
-     * the files first.
-     *
-     * There is still a risk of conflincting writes, that is mitigated by hashing
-     * the result code, that is verified at the end. In case of writes happening
-     * close to each others, one of the workers is going to loose its results no
-     * matter what.
-     */
+       * We store the transformed JS because it is likely to be much bigger than the
+       * rest of the data JSON. Probably the map should be stored separately as
+       * well.
+       *
+       * We make the write operation as much atomic as possible: indeed, if another
+       * process is reading the cache at the same time, there would be a risk it
+       * reads new transformed code, but old metadata. This is avoided by removing
+       * the files first.
+       *
+       * There is still a risk of conflincting writes, that is mitigated by hashing
+       * the result code, that is verified at the end. In case of writes happening
+       * close to each others, one of the workers is going to loose its results no
+       * matter what.
+       */
   writeSync(props)
 
 
@@ -156,18 +156,18 @@ class FileBasedCache {
   }
 
   /**
-     * We verify the source hash matches to ensure we always favor rebuilding when
-     * source change (rather than just using fs.mtime(), a bit less robust).
-     *
-     * That means when the source changes, we override the old transformed code
-     * with the new one. This is, I believe, preferable, so as to avoid bloating
-     * the cache during development cycles, where people changes files all the
-     * time. If we implement a global cache ability at some point, we'll be able
-     * to store old artifacts as well.
-     *
-     * Meanwhile we store transforms with different options in different files so
-     * that it is fast to switch between ex. minified, or not.
-     */
+       * We verify the source hash matches to ensure we always favor rebuilding when
+       * source change (rather than just using fs.mtime(), a bit less robust).
+       *
+       * That means when the source changes, we override the old transformed code
+       * with the new one. This is, I believe, preferable, so as to avoid bloating
+       * the cache during development cycles, where people changes files all the
+       * time. If we implement a global cache ability at some point, we'll be able
+       * to store old artifacts as well.
+       *
+       * Meanwhile we store transforms with different options in different files so
+       * that it is fast to switch between ex. minified, or not.
+       */
   _readSync(props) {
     this._collectIfNecessarySync(props.cacheOptions);
     try {
@@ -209,10 +209,10 @@ class FileBasedCache {
   }
 
   /**
-     * Temporary folder is never cleaned up automatically, we need to clean up old
-     * stuff ourselves. This code should be safe even if two different React
-     * Native projects are running at the same time.
-     */
+       * Temporary folder is never cleaned up automatically, we need to clean up old
+       * stuff ourselves. This code should be safe even if two different React
+       * Native projects are running at the same time.
+       */
   _collectIfNecessarySync(options) {
     if (options.resetCache && !this._cacheWasReset) {
       this.resetCache(options.reporter);
@@ -228,9 +228,9 @@ class FileBasedCache {
   }
 
   /**
-     * We want to avoid preventing tool use if the cleanup fails for some reason,
-     * but still provide some chance for people to report/fix things.
-     */
+       * We want to avoid preventing tool use if the cleanup fails for some reason,
+       * but still provide some chance for people to report/fix things.
+       */
   _collectSyncNoThrow(reporter) {
     try {
       this._collectCacheIfOldSync();
@@ -249,10 +249,10 @@ class FileBasedCache {
   }
 
   /**
-     * When restarting Metro Bundler we want to avoid running the collection over
-     * again, so we store the last collection time in a file and we check that
-     * first.
-     */
+       * When restarting Metro Bundler we want to avoid running the collection over
+       * again, so we store the last collection time in a file and we check that
+       * first.
+       */
   _collectCacheIfOldSync() {const
     _rootPath = this._rootPath;
     const cacheCollectionFilePath = path.join(_rootPath, 'last_collected');
@@ -273,10 +273,10 @@ class FileBasedCache {
   }
 
   /**
-     * The path, built as a hash, does not take the source code itself into
-     * account because it would generate lots of file during development. (The
-     * source hash is stored in the metadata instead).
-     */
+       * The path, built as a hash, does not take the source code itself into
+       * account because it would generate lots of file during development. (The
+       * source hash is stored in the metadata instead).
+       */
   _getCacheFilePaths(props)
 
 
@@ -294,9 +294,9 @@ class FileBasedCache {
 
 
 /**
-      * Remove all the cache files from the specified folder that are older than a
-      * certain duration.
-      */
+           * Remove all the cache files from the specified folder that are older than a
+           * certain duration.
+           */
 function collectCacheSync(dirPath) {
   const prefixDirs = fs.readdirSync(dirPath);
   for (let i = 0; i < prefixDirs.length; ++i) {
@@ -380,9 +380,9 @@ function hashSourceCode(props)
 }
 
 /**
-   * We want to unlink all cache files before writing, so that it is as much
-   * atomic as possible.
-   */
+     * We want to unlink all cache files before writing, so that it is as much
+     * atomic as possible.
+     */
 function unlinkIfExistsSync(filePath) {
   try {
     fs.unlinkSync(filePath);
@@ -395,9 +395,9 @@ function unlinkIfExistsSync(filePath) {
 }
 
 /**
-   * In some context we want to build from scratch, that is what this cache
-   * implementation allows.
-   */
+     * In some context we want to build from scratch, that is what this cache
+     * implementation allows.
+     */
 function none() {
   return {
     writeSync: () => {},
@@ -417,11 +417,11 @@ function getTempDir() {
 }
 
 /**
-   * If Metro Bundler is running for two different directories, we don't want the
-   * caches to conflict with each other. `__dirname` carries that because
-   * Metro Bundler will be, for example, installed in a different `node_modules/`
-   * folder for different projects.
-   */
+     * If Metro Bundler is running for two different directories, we don't want the
+     * caches to conflict with each other. `__dirname` carries that because
+     * Metro Bundler will be, for example, installed in a different `node_modules/`
+     * folder for different projects.
+     */
 function useTempDir() {
   const rootPath = getTempDir();
   mkdirp.sync(rootPath);

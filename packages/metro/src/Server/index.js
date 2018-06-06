@@ -163,7 +163,7 @@ class Server {
       workerPath: options.workerPath };
 
 
-    const processFileChange = (_ref) => {let type = _ref.type,filePath = _ref.filePath;return (
+    const processFileChange = _ref => {let type = _ref.type,filePath = _ref.filePath;return (
         this.onFileChange(type, filePath));};
 
     this._reporter = reporter;
@@ -193,7 +193,7 @@ class Server {
     this._bundler.getDependencyGraph().then(dependencyGraph => {
       dependencyGraph.
       getWatcher().
-      on('change', (_ref2) => {let eventsQueue = _ref2.eventsQueue;return (
+      on('change', _ref2 => {let eventsQueue = _ref2.eventsQueue;return (
           eventsQueue.forEach(processFileChange));});
 
     });
@@ -476,8 +476,8 @@ class Server {
     }
 
     /* $FlowFixMe(>=0.63.0 site=react_native_fb) This comment suppresses an
-       * error found when Flow v0.63 was deployed. To see the error delete this
-       * comment and run Flow. */
+         * error found when Flow v0.63 was deployed. To see the error delete this
+         * comment and run Flow. */
     this._reporter.update({
       buildID,
       bundleDetails: {
@@ -707,7 +707,7 @@ class Server {
     debug('Start symbolication');
 
     /* $FlowFixMe: where is `rowBody` defined? Is it added by
-                                   * the `connect` framework? */
+                                                                 * the `connect` framework? */
     Promise.resolve(req.rawBody).
     then(body => {
       const stack = JSON.parse(body).stack;

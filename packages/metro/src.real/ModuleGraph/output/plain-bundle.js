@@ -4,41 +4,41 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
 'use strict';
 
-const meta = require('../../shared/output/meta');
+const meta = require('../../shared/output/meta');var _require =
 
-const {getModuleCode, concat} = require('./util');
-const {createIndexMap} = require('metro-source-map');
+require('./util');const getModuleCode = _require.getModuleCode,concat = _require.concat;var _require2 =
+require('metro-source-map');const createIndexMap = _require2.createIndexMap;
 
-import type {OutputFn} from '../types.flow';
 
-function asPlainBundle({
-  filename,
-  idsForPath,
-  modules,
-  requireCalls,
-  sourceMapPath,
-}) {
+
+function asPlainBundle(_ref)
+
+
+
+
+
+{let filename = _ref.filename,idsForPath = _ref.idsForPath,modules = _ref.modules,requireCalls = _ref.requireCalls,sourceMapPath = _ref.sourceMapPath;
   let code = '';
   let line = 0;
   const sections = [];
   const modIdForPath = x => idsForPath(x).moduleId;
 
-  for (const module of concat(modules, requireCalls)) {
-    const {file} = module;
+  for (const module of concat(modules, requireCalls)) {const
+    file = module.file;
     const moduleCode = getModuleCode(module, modIdForPath);
 
     code += moduleCode + '\n';
     if (file.map) {
       sections.push({
         map: file.map,
-        offset: {column: 0, line},
-      });
+        offset: { column: 0, line } });
+
     }
     line += countLines(moduleCode);
   }
@@ -50,14 +50,14 @@ function asPlainBundle({
   return {
     code,
     extraFiles: [[`${filename}.meta`, meta(code)]],
-    map: createIndexMap(filename, sections),
-  };
+    map: createIndexMap(filename, sections) };
+
 }
 
-module.exports = (asPlainBundle: OutputFn<>);
+module.exports = asPlainBundle;
 
 const reLine = /^/gm;
-function countLines(string: string): number {
+function countLines(string) {
   //$FlowFixMe This regular expression always matches
   return string.match(reLine).length;
 }

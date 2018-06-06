@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
@@ -15,512 +15,512 @@ const constants = require('constants');
 const path = require('path');
 const stream = require('stream');
 
-type NodeBase = {|
-  id: number,
-|};
 
-type DirectoryNode = {|
-  ...NodeBase,
-  type: 'directory',
-  entries: Map<string, EntityNode>,
-|};
 
-type FileNode = {|
-  ...NodeBase,
-  type: 'file',
-  content: Buffer,
-|};
 
-type SymbolicLinkNode = {|
-  ...NodeBase,
-  type: 'symbolicLink',
-  target: string,
-|};
 
-type EntityNode = DirectoryNode | FileNode | SymbolicLinkNode;
 
-type Encoding =
-  | 'ascii'
-  | 'base64'
-  | 'binary'
-  | 'hex'
-  | 'latin1'
-  | 'ucs2'
-  | 'utf16le'
-  | 'utf8';
 
-type Resolution = {|
-  +basename: string,
-  +dirNode: DirectoryNode,
-  +node: ?EntityNode,
-  +realpath: string,
-|};
 
-type Descriptor = {|
-  +node: FileNode,
-  +readable: boolean,
-  +writable: boolean,
-  position: number,
-|};
 
-const FLAGS_SPECS: {
-  [string]: {
-    exclusive?: true,
-    mustExist?: true,
-    readable?: true,
-    truncate?: true,
-    writable?: true,
-  },
-} = {
-  r: {mustExist: true, readable: true},
-  'r+': {mustExist: true, readable: true, writable: true},
-  'rs+': {mustExist: true, readable: true, writable: true},
-  w: {truncate: true, writable: true},
-  wx: {exclusive: true, truncate: true, writable: true},
-  'w+': {readable: true, truncate: true, writable: true},
-  'wx+': {exclusive: true, readable: true, truncate: true, writable: true},
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const FLAGS_SPECS =
+
+
+
+
+
+
+
+{
+  r: { mustExist: true, readable: true },
+  'r+': { mustExist: true, readable: true, writable: true },
+  'rs+': { mustExist: true, readable: true, writable: true },
+  w: { truncate: true, writable: true },
+  wx: { exclusive: true, truncate: true, writable: true },
+  'w+': { readable: true, truncate: true, writable: true },
+  'wx+': { exclusive: true, readable: true, truncate: true, writable: true } };
+
 
 const ASYNC_FUNC_NAMES = [
-  'close',
-  'open',
-  'read',
-  'readdir',
-  'readFile',
-  'realpath',
-  'stat',
-  'write',
-  'writeFile',
-];
+'close',
+'open',
+'read',
+'readdir',
+'readFile',
+'realpath',
+'stat',
+'write',
+'writeFile'];
+
 
 /**
- * Simulates `fs` API in an isolated, memory-based filesystem. This is useful
- * for testing systems that rely on `fs` without affecting the real filesystem.
- * This is meant to be a drop-in replacement/mock for `fs`, so it mimics
- * closely the behavior of file path resolution and file accesses.
- */
+                             * Simulates `fs` API in an isolated, memory-based filesystem. This is useful
+                             * for testing systems that rely on `fs` without affecting the real filesystem.
+                             * This is meant to be a drop-in replacement/mock for `fs`, so it mimics
+                             * closely the behavior of file path resolution and file accesses.
+                             */
 class MemoryFs {
-  _root: DirectoryNode;
-  _fds: Map<number, Descriptor>;
-  _nextId: number;
 
-  close: (fd: number, callback: (error: ?Error) => mixed) => void;
-  open: (
-    filePath: string | Buffer,
-    flag: string | number,
-    mode?: number,
-    callback: (error: ?Error, fd: ?number) => mixed,
-  ) => void;
-  read: (
-    fd: number,
-    buffer: Buffer,
-    offset: number,
-    length: number,
-    position: ?number,
-    callback: (?Error, ?number) => mixed,
-  ) => void;
-  readFile: (
-    filePath: string | Buffer,
-    options?:
-      | {
-          encoding?: Encoding,
-          flag?: string,
-        }
-      | Encoding
-      | ((?Error, ?Buffer | string) => mixed),
-    callback?: (?Error, ?Buffer | string) => mixed,
-  ) => void;
-  realpath: (
-    filePath: string | Buffer,
-    callback: (?Error, ?string) => mixed,
-  ) => void;
-  write: (
-    fd: number,
-    bufferOrString: Buffer | string,
-    offsetOrPosition?: number | ((?Error, number) => mixed),
-    lengthOrEncoding?: number | string | ((?Error, number) => mixed),
-    position?: number | ((?Error, number) => mixed),
-    callback?: (?Error, number) => mixed,
-  ) => void;
-  writeFile: (
-    filePath: string | Buffer,
-    data: Buffer | string,
-    options?:
-      | {
-          encoding?: ?Encoding,
-          mode?: ?number,
-          flag?: ?string,
-        }
-      | Encoding
-      | ((?Error) => mixed),
-    callback?: (?Error) => mixed,
-  ) => void;
 
-  constructor() {
-    this.reset();
-    ASYNC_FUNC_NAMES.forEach(funcName => {
-      const func = (this: $FlowFixMe)[`${funcName}Sync`];
-      (this: $FlowFixMe)[funcName] = function(...args) {
-        const callback = args.pop();
-        process.nextTick(() => {
-          let retval;
-          try {
-            retval = func.apply(null, args);
-          } catch (error) {
-            callback(error);
-            return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  constructor() {this.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    closeSync = fd => {
+      this._fds.delete(fd);
+    };this.
+
+    openSync = (
+    filePath,
+    flags,
+    mode) =>
+    {
+      if (typeof flags === 'number') {
+        throw new Error(`numeric flags not supported: ${flags}`);
+      }
+      return this._open(pathStr(filePath), flags, mode);
+    };this.
+
+    readSync = (
+    fd,
+    buffer,
+    offset,
+    length,
+    position) =>
+    {
+      const desc = this._fds.get(fd);
+      if (desc == null) {
+        throw makeError('EBADF', null, 'file descriptor is not open');
+      }
+      if (!desc.readable) {
+        throw makeError('EBADF', null, 'file descriptor cannot be written to');
+      }
+      if (position != null) {
+        desc.position = position;
+      }
+      const endPos = Math.min(desc.position + length, desc.node.content.length);
+      desc.node.content.copy(buffer, offset, desc.position, endPos);
+      const bytesRead = endPos - desc.position;
+      desc.position = endPos;
+      return bytesRead;
+    };this.
+
+    readdirSync = (
+    filePath,
+    options) =>
+
+
+
+
+    {
+      let encoding;
+      if (typeof options === 'string') {
+        encoding = options;
+      } else if (options != null) {
+        encoding = options.encoding;
+      }
+      filePath = pathStr(filePath);var _resolve =
+      this._resolve(filePath);const node = _resolve.node;
+      if (node == null) {
+        throw makeError('ENOENT', filePath, 'no such file or directory');
+      }
+      if (node.type !== 'directory') {
+        throw makeError('ENOTDIR', filePath, 'not a directory');
+      }
+      return Array.from(node.entries.keys()).map(str => {
+        if (encoding === 'utf8') {
+          return str;
+        }
+        const buffer = Buffer.from(str);
+        if (encoding === 'buffer') {
+          return buffer;
+        }
+        return buffer.toString(encoding);
+      });
+    };this.
+
+    readFileSync = (
+    filePath,
+    options) =>
+
+
+
+
+
+    {
+      let encoding, flag;
+      if (typeof options === 'string') {
+        encoding = options;
+      } else if (options != null) {
+        encoding = options.encoding;flag = options.flag;
+      }
+      const fd = this._open(pathStr(filePath), flag || 'r');
+      const chunks = [];
+      try {
+        const buffer = new Buffer(1024);
+        let bytesRead;
+        do {
+          bytesRead = this.readSync(fd, buffer, 0, buffer.length, null);
+          if (bytesRead === 0) {
+            continue;
           }
-          callback(null, retval);
-        });
-      };
-    });
-  }
-
-  reset() {
-    this._nextId = 1;
-    this._root = this._makeDir();
-    this._fds = new Map();
-  }
-
-  closeSync = (fd: number): void => {
-    this._fds.delete(fd);
-  };
-
-  openSync = (
-    filePath: string | Buffer,
-    flags: string | number,
-    mode?: number,
-  ): number => {
-    if (typeof flags === 'number') {
-      throw new Error(`numeric flags not supported: ${flags}`);
-    }
-    return this._open(pathStr(filePath), flags, mode);
-  };
-
-  readSync = (
-    fd: number,
-    buffer: Buffer,
-    offset: number,
-    length: number,
-    position: ?number,
-  ): number => {
-    const desc = this._fds.get(fd);
-    if (desc == null) {
-      throw makeError('EBADF', null, 'file descriptor is not open');
-    }
-    if (!desc.readable) {
-      throw makeError('EBADF', null, 'file descriptor cannot be written to');
-    }
-    if (position != null) {
-      desc.position = position;
-    }
-    const endPos = Math.min(desc.position + length, desc.node.content.length);
-    desc.node.content.copy(buffer, offset, desc.position, endPos);
-    const bytesRead = endPos - desc.position;
-    desc.position = endPos;
-    return bytesRead;
-  };
-
-  readdirSync = (
-    filePath: string | Buffer,
-    options?:
-      | {
-          encoding?: Encoding,
-        }
-      | Encoding,
-  ): Array<string | Buffer> => {
-    let encoding;
-    if (typeof options === 'string') {
-      encoding = options;
-    } else if (options != null) {
-      ({encoding} = options);
-    }
-    filePath = pathStr(filePath);
-    const {node} = this._resolve(filePath);
-    if (node == null) {
-      throw makeError('ENOENT', filePath, 'no such file or directory');
-    }
-    if (node.type !== 'directory') {
-      throw makeError('ENOTDIR', filePath, 'not a directory');
-    }
-    return Array.from(node.entries.keys()).map(str => {
-      if (encoding === 'utf8') {
-        return str;
+          const chunk = new Buffer(bytesRead);
+          buffer.copy(chunk, 0, 0, bytesRead);
+          chunks.push(chunk);
+        } while (bytesRead > 0);
+      } finally {
+        this.closeSync(fd);
       }
-      const buffer = Buffer.from(str);
-      if (encoding === 'buffer') {
-        return buffer;
+      const result = Buffer.concat(chunks);
+      if (encoding == null) {
+        return result;
       }
-      return buffer.toString(encoding);
-    });
-  };
+      return result.toString(encoding);
+    };this.
 
-  readFileSync = (
-    filePath: string | Buffer,
-    options?:
-      | {
-          encoding?: Encoding,
-          flag?: string,
-        }
-      | Encoding,
-  ): Buffer | string => {
-    let encoding, flag;
-    if (typeof options === 'string') {
-      encoding = options;
-    } else if (options != null) {
-      ({encoding, flag} = options);
-    }
-    const fd = this._open(pathStr(filePath), flag || 'r');
-    const chunks = [];
-    try {
-      const buffer = new Buffer(1024);
-      let bytesRead;
-      do {
-        bytesRead = this.readSync(fd, buffer, 0, buffer.length, null);
-        if (bytesRead === 0) {
-          continue;
-        }
-        const chunk = new Buffer(bytesRead);
-        buffer.copy(chunk, 0, 0, bytesRead);
-        chunks.push(chunk);
-      } while (bytesRead > 0);
-    } finally {
-      this.closeSync(fd);
-    }
-    const result = Buffer.concat(chunks);
-    if (encoding == null) {
-      return result;
-    }
-    return result.toString(encoding);
-  };
+    realpathSync = filePath => {
+      return this._resolve(pathStr(filePath)).realpath;
+    };this.
 
-  realpathSync = (filePath: string | Buffer): string => {
-    return this._resolve(pathStr(filePath)).realpath;
-  };
-
-  writeSync = (
-    fd: number,
-    bufferOrString: Buffer | string,
-    offsetOrPosition?: number,
-    lengthOrEncoding?: number | string,
-    position?: number,
-  ): number => {
-    let encoding, offset, length, buffer;
-    if (typeof bufferOrString === 'string') {
-      position = offsetOrPosition;
-      encoding = lengthOrEncoding;
-      buffer = (Buffer: $FlowFixMe).from(
+    writeSync = (
+    fd,
+    bufferOrString,
+    offsetOrPosition,
+    lengthOrEncoding,
+    position) =>
+    {
+      let encoding, offset, length, buffer;
+      if (typeof bufferOrString === 'string') {
+        position = offsetOrPosition;
+        encoding = lengthOrEncoding;
+        buffer = Buffer.from(
         bufferOrString,
-        (encoding: $FlowFixMe) || 'utf8',
-      );
-    } else {
-      offset = offsetOrPosition;
-      if (lengthOrEncoding != null && typeof lengthOrEncoding !== 'number') {
-        throw new Error('invalid length');
+        encoding || 'utf8');
+
+      } else {
+        offset = offsetOrPosition;
+        if (lengthOrEncoding != null && typeof lengthOrEncoding !== 'number') {
+          throw new Error('invalid length');
+        }
+        length = lengthOrEncoding;
+        buffer = bufferOrString;
       }
-      length = lengthOrEncoding;
-      buffer = bufferOrString;
-    }
-    if (offset == null) {
-      offset = 0;
-    }
-    if (length == null) {
-      length = buffer.length;
-    }
-    return this._write(fd, buffer, offset, length, position);
-  };
-
-  writeFileSync = (
-    filePath: string | Buffer,
-    data: Buffer | string,
-    options?:
-      | {
-          encoding?: ?Encoding,
-          mode?: ?number,
-          flag?: ?string,
-        }
-      | Encoding,
-  ): void => {
-    let encoding, mode, flag;
-    if (typeof options === 'string') {
-      encoding = options;
-    } else if (options != null) {
-      ({encoding, mode, flag} = options);
-    }
-    if (encoding == null) {
-      encoding = 'utf8';
-    }
-    if (typeof data === 'string') {
-      data = (Buffer: $FlowFixMe).from(data, encoding);
-    }
-    const fd = this._open(pathStr(filePath), flag || 'w', mode);
-    try {
-      this._write(fd, data, 0, data.length);
-    } finally {
-      this.closeSync(fd);
-    }
-  };
-
-  mkdirSync = (dirPath: string | Buffer, mode?: number): void => {
-    if (mode == null) {
-      mode = 0o777;
-    }
-    dirPath = pathStr(dirPath);
-    const {dirNode, node, basename} = this._resolve(dirPath);
-    if (node != null) {
-      throw makeError('EEXIST', dirPath, 'directory or file already exists');
-    }
-    dirNode.entries.set(basename, this._makeDir());
-  };
-
-  symlinkSync = (
-    target: string | Buffer,
-    filePath: string | Buffer,
-    type?: string,
-  ) => {
-    if (type == null) {
-      type = 'file';
-    }
-    if (type !== 'file') {
-      throw new Error('symlink type not supported');
-    }
-    filePath = pathStr(filePath);
-    const {dirNode, node, basename} = this._resolve(filePath);
-    if (node != null) {
-      throw makeError('EEXIST', filePath, 'directory or file already exists');
-    }
-    dirNode.entries.set(basename, {
-      type: 'symbolicLink',
-      id: this._getId(),
-      target: pathStr(target),
-    });
-  };
-
-  existsSync = (filePath: string | Buffer): boolean => {
-    try {
-      const {node} = this._resolve(pathStr(filePath));
-      return node != null;
-    } catch (error) {
-      if (error.code === 'ENOENT') {
-        return false;
+      if (offset == null) {
+        offset = 0;
       }
-      throw error;
-    }
-  };
+      if (length == null) {
+        length = buffer.length;
+      }
+      return this._write(fd, buffer, offset, length, position);
+    };this.
 
-  statSync = (filePath: string | Buffer) => {
-    filePath = pathStr(filePath);
-    const {node} = this._resolve(filePath);
-    if (node == null) {
-      throw makeError('ENOENT', filePath, 'no such file or directory');
-    }
-    return new Stats(node);
-  };
+    writeFileSync = (
+    filePath,
+    data,
+    options) =>
 
-  createReadStream = (
-    filePath: string | Buffer,
-    options?:
-      | {
-          autoClose?: ?boolean,
-          encoding?: ?Encoding,
-          end?: ?number,
-          fd?: ?number,
-          flags?: ?string,
-          highWaterMark?: ?number,
-          mode?: ?number,
-          start?: ?number,
+
+
+
+
+
+    {
+      let encoding, mode, flag;
+      if (typeof options === 'string') {
+        encoding = options;
+      } else if (options != null) {
+        encoding = options.encoding;mode = options.mode;flag = options.flag;
+      }
+      if (encoding == null) {
+        encoding = 'utf8';
+      }
+      if (typeof data === 'string') {
+        data = Buffer.from(data, encoding);
+      }
+      const fd = this._open(pathStr(filePath), flag || 'w', mode);
+      try {
+        this._write(fd, data, 0, data.length);
+      } finally {
+        this.closeSync(fd);
+      }
+    };this.
+
+    mkdirSync = (dirPath, mode) => {
+      if (mode == null) {
+        mode = 0o777;
+      }
+      dirPath = pathStr(dirPath);var _resolve2 =
+      this._resolve(dirPath);const dirNode = _resolve2.dirNode,node = _resolve2.node,basename = _resolve2.basename;
+      if (node != null) {
+        throw makeError('EEXIST', dirPath, 'directory or file already exists');
+      }
+      dirNode.entries.set(basename, this._makeDir());
+    };this.
+
+    symlinkSync = (
+    target,
+    filePath,
+    type) =>
+    {
+      if (type == null) {
+        type = 'file';
+      }
+      if (type !== 'file') {
+        throw new Error('symlink type not supported');
+      }
+      filePath = pathStr(filePath);var _resolve3 =
+      this._resolve(filePath);const dirNode = _resolve3.dirNode,node = _resolve3.node,basename = _resolve3.basename;
+      if (node != null) {
+        throw makeError('EEXIST', filePath, 'directory or file already exists');
+      }
+      dirNode.entries.set(basename, {
+        type: 'symbolicLink',
+        id: this._getId(),
+        target: pathStr(target) });
+
+    };this.
+
+    existsSync = filePath => {
+      try {var _resolve4 =
+        this._resolve(pathStr(filePath));const node = _resolve4.node;
+        return node != null;
+      } catch (error) {
+        if (error.code === 'ENOENT') {
+          return false;
         }
-      | Encoding,
-  ) => {
-    let autoClose, encoding, fd, flags, mode, start, end, highWaterMark;
-    if (typeof options === 'string') {
-      encoding = options;
-    } else if (options != null) {
-      ({autoClose, encoding, fd, flags, mode, start} = options);
-      ({end, highWaterMark} = options);
-    }
-    let st = null;
-    if (fd == null) {
-      fd = this._open(pathStr(filePath), flags || 'r', mode);
-      process.nextTick(() => (st: any).emit('open', fd));
-    }
-    const ffd = fd;
-    const {readSync} = this;
-    const ropt = {filePath, encoding, fd, highWaterMark, start, end, readSync};
-    const rst = new ReadFileSteam(ropt);
-    st = rst;
-    if (autoClose !== false) {
-      const doClose = () => {
-        this.closeSync(ffd);
-        rst.emit('close');
-      };
-      rst.on('end', doClose);
-      rst.on('error', doClose);
-    }
-    return rst;
-  };
+        throw error;
+      }
+    };this.
 
-  createWriteStream = (
-    filePath: string | Buffer,
-    options?:
-      | {
-          autoClose?: ?boolean,
-          encoding?: ?Encoding,
-          fd?: ?number,
-          flags?: ?string,
-          mode?: ?number,
-          start?: ?number,
-        }
-      | Encoding,
-  ) => {
-    let autoClose, fd, flags, mode, start;
-    if (typeof options !== 'string' && options != null) {
-      ({autoClose, fd, flags, mode, start} = options);
-    }
-    let st = null;
-    if (fd == null) {
-      fd = this._open(pathStr(filePath), flags || 'w', mode);
-      process.nextTick(() => (st: any).emit('open', fd));
-    }
-    const ffd = fd;
-    const ropt = {fd, writeSync: this._write.bind(this), filePath, start};
-    const rst = new WriteFileStream(ropt);
-    st = rst;
-    if (autoClose !== false) {
-      const doClose = () => {
-        this.closeSync(ffd);
-        rst.emit('close');
-      };
-      rst.on('finish', doClose);
-      rst.on('error', doClose);
-    }
-    return st;
-  };
+    statSync = filePath => {
+      filePath = pathStr(filePath);var _resolve5 =
+      this._resolve(filePath);const node = _resolve5.node;
+      if (node == null) {
+        throw makeError('ENOENT', filePath, 'no such file or directory');
+      }
+      return new Stats(node);
+    };this.
+
+    createReadStream = (
+    filePath,
+    options) =>
+
+
+
+
+
+
+
+
+
+
+
+    {
+      let autoClose, encoding, fd, flags, mode, start, end, highWaterMark;
+      if (typeof options === 'string') {
+        encoding = options;
+      } else if (options != null) {
+        autoClose = options.autoClose;encoding = options.encoding;fd = options.fd;flags = options.flags;mode = options.mode;start = options.start;
+        end = options.end;highWaterMark = options.highWaterMark;
+      }
+      let st = null;
+      if (fd == null) {
+        fd = this._open(pathStr(filePath), flags || 'r', mode);
+        process.nextTick(() => st.emit('open', fd));
+      }
+      const ffd = fd;const
+      readSync = this.readSync;
+      const ropt = { filePath, encoding, fd, highWaterMark, start, end, readSync };
+      const rst = new ReadFileSteam(ropt);
+      st = rst;
+      if (autoClose !== false) {
+        const doClose = () => {
+          this.closeSync(ffd);
+          rst.emit('close');
+        };
+        rst.on('end', doClose);
+        rst.on('error', doClose);
+      }
+      return rst;
+    };this.
+
+    createWriteStream = (
+    filePath,
+    options) =>
+
+
+
+
+
+
+
+
+
+    {
+      let autoClose, fd, flags, mode, start;
+      if (typeof options !== 'string' && options != null) {
+        autoClose = options.autoClose;fd = options.fd;flags = options.flags;mode = options.mode;start = options.start;
+      }
+      let st = null;
+      if (fd == null) {
+        fd = this._open(pathStr(filePath), flags || 'w', mode);
+        process.nextTick(() => st.emit('open', fd));
+      }
+      const ffd = fd;
+      const ropt = { fd, writeSync: this._write.bind(this), filePath, start };
+      const rst = new WriteFileStream(ropt);
+      st = rst;
+      if (autoClose !== false) {
+        const doClose = () => {
+          this.closeSync(ffd);
+          rst.emit('close');
+        };
+        rst.on('finish', doClose);
+        rst.on('error', doClose);
+      }
+      return st;
+    };this.reset();ASYNC_FUNC_NAMES.forEach(funcName => {const func = this[`${funcName}Sync`];this[funcName] = function () {for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {args[_key] = arguments[_key];}const callback = args.pop();process.nextTick(() => {let retval;try {retval = func.apply(null, args);} catch (error) {callback(error);return;}callback(null, retval);});};});}reset() {this._nextId = 1;this._root = this._makeDir();this._fds = new Map();}
 
   _makeDir() {
-    return {type: 'directory', id: this._getId(), entries: new Map()};
+    return { type: 'directory', id: this._getId(), entries: new Map() };
   }
 
   _getId() {
     return ++this._nextId;
   }
 
-  _open(filePath: string, flags: string, mode: ?number): number {
+  _open(filePath, flags, mode) {
     if (mode == null) {
       mode = 0o666;
     }
     const spec = FLAGS_SPECS[flags];
     if (spec == null) {
       throw new Error(`flags not supported: \`${flags}\``);
-    }
-    const {writable = false, readable = false} = spec;
-    const {exclusive, mustExist, truncate} = spec;
-    let {dirNode, node, basename} = this._resolve(filePath);
+    }var _spec$writable =
+    spec.writable;const writable = _spec$writable === undefined ? false : _spec$writable;var _spec$readable = spec.readable;const readable = _spec$readable === undefined ? false : _spec$readable;const
+    exclusive = spec.exclusive,mustExist = spec.mustExist,truncate = spec.truncate;var _resolve6 =
+    this._resolve(filePath);let dirNode = _resolve6.dirNode,node = _resolve6.node,basename = _resolve6.basename;
     if (node == null) {
       if (mustExist) {
         throw makeError('ENOENT', filePath, 'no such file or directory');
       }
-      node = {type: 'file', id: this._getId(), content: new Buffer(0)};
+      node = { type: 'file', id: this._getId(), content: new Buffer(0) };
       dirNode.entries.set(basename, node);
     } else {
       if (exclusive) {
@@ -533,14 +533,14 @@ class MemoryFs {
         node.content = new Buffer(0);
       }
     }
-    return this._getFd(filePath, {node, position: 0, writable, readable});
+    return this._getFd(filePath, { node, position: 0, writable, readable });
   }
 
   /**
-   * Implemented according with
-   * http://man7.org/linux/man-pages/man7/path_resolution.7.html
-   */
-  _resolve(originalFilePath: string): Resolution {
+       * Implemented according with
+       * http://man7.org/linux/man-pages/man7/path_resolution.7.html
+       */
+  _resolve(originalFilePath) {
     let filePath = originalFilePath;
     let drive = '';
     if (path === path.win32 && filePath.match(/^[a-zA-Z]:\\/)) {
@@ -561,35 +561,35 @@ class MemoryFs {
       node: this._root,
       nodePath: [['', this._root]],
       entNames,
-      symlinkCount: 0,
-    };
+      symlinkCount: 0 };
+
     while (context.entNames.length > 0) {
       const entName = context.entNames.shift();
       this._resolveEnt(context, originalFilePath, entName);
-    }
-    const {nodePath} = context;
+    }const
+    nodePath = context.nodePath;
     return {
       realpath: drive + nodePath.map(x => x[0]).join(path.sep),
-      dirNode: (nodePath[nodePath.length - 2][1]: $FlowFixMe),
+      dirNode: nodePath[nodePath.length - 2][1],
       node: context.node,
-      basename: (nodePath[nodePath.length - 1][0]: $FlowFixMe),
-    };
+      basename: nodePath[nodePath.length - 1][0] };
+
   }
 
-  _resolveEnt(context, filePath, entName) {
-    const {node} = context;
+  _resolveEnt(context, filePath, entName) {const
+    node = context.node;
     if (node == null) {
       throw makeError('ENOENT', filePath, 'no such file or directory');
     }
     if (node.type !== 'directory') {
       throw makeError('ENOTDIR', filePath, 'not a directory');
-    }
-    const {entries} = node;
+    }const
+    entries = node.entries;
     if (entName === '' || entName === '.') {
       return;
     }
-    if (entName === '..') {
-      const {nodePath} = context;
+    if (entName === '..') {const
+      nodePath = context.nodePath;
       if (nodePath.length > 1) {
         nodePath.pop();
         context.node = nodePath[nodePath.length - 1][1];
@@ -604,8 +604,8 @@ class MemoryFs {
     }
     if (context.symlinkCount >= 10) {
       throw makeError('ELOOP', filePath, 'too many levels of symbolic links');
-    }
-    let {target} = childNode;
+    }let
+    target = childNode.target;
     if (target[0] === '/') {
       target = target.substring(1);
       context.node = this._root;
@@ -617,12 +617,12 @@ class MemoryFs {
   }
 
   _write(
-    fd: number,
-    buffer: Buffer,
-    offset: number,
-    length: number,
-    position: ?number,
-  ): number {
+  fd,
+  buffer,
+  offset,
+  length,
+  position)
+  {
     const desc = this._fds.get(fd);
     if (desc == null) {
       throw makeError('EBADF', null, 'file descriptor is not open');
@@ -632,8 +632,8 @@ class MemoryFs {
     }
     if (position == null) {
       position = desc.position;
-    }
-    const {node} = desc;
+    }const
+    node = desc.node;
     if (node.content.length < position + length) {
       const newBuffer = new Buffer(position + length);
       node.content.copy(newBuffer, 0, 0, node.content.length);
@@ -644,7 +644,7 @@ class MemoryFs {
     return buffer.length;
   }
 
-  _getFd(filePath: string, desc: Descriptor): number {
+  _getFd(filePath, desc) {
     let fd = 3;
     while (this._fds.has(fd)) {
       ++fd;
@@ -654,34 +654,34 @@ class MemoryFs {
     }
     this._fds.set(fd, desc);
     return fd;
-  }
-}
+  }}
+
 
 class Stats {
-  _type: string;
-  dev: number;
-  mode: number;
-  nlink: number;
-  uid: number;
-  gid: number;
-  rdev: number;
-  blksize: number;
-  ino: number;
-  size: number;
-  blocks: number;
-  atimeMs: number;
-  mtimeMs: number;
-  ctimeMs: number;
-  birthtimeMs: number;
-  atime: Date;
-  mtime: Date;
-  ctime: Date;
-  birthtime: Date;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /**
-   * Don't keep a reference to the node as it may get mutated over time.
-   */
-  constructor(node: EntityNode) {
+                         * Don't keep a reference to the node as it may get mutated over time.
+                         */
+  constructor(node) {
     this._type = node.type;
     this.dev = 1;
     this.mode = 0;
@@ -692,9 +692,9 @@ class Stats {
     this.blksize = 1024;
     this.ino = node.id;
     this.size =
-      node.type === 'file'
-        ? node.content.length
-        : node.type === 'symbolicLink' ? node.target.length : 0;
+    node.type === 'file' ?
+    node.content.length :
+    node.type === 'symbolicLink' ? node.target.length : 0;
     this.blocks = Math.ceil(this.size / 512);
     this.atimeMs = 1;
     this.mtimeMs = 1;
@@ -706,75 +706,75 @@ class Stats {
     this.birthtime = new Date(this.birthtimeMs);
   }
 
-  isFile(): boolean {
+  isFile() {
     return this._type === 'file';
   }
-  isDirectory(): boolean {
+  isDirectory() {
     return this._type === 'directory';
   }
-  isBlockDevice(): boolean {
+  isBlockDevice() {
     return false;
   }
-  isCharacterDevice(): boolean {
+  isCharacterDevice() {
     return false;
   }
-  isSymbolicLink(): boolean {
+  isSymbolicLink() {
     return this._type === 'symbolicLink';
   }
-  isFIFO(): boolean {
+  isFIFO() {
     return false;
   }
-  isSocket(): boolean {
+  isSocket() {
     return false;
-  }
-}
+  }}
 
-type ReadSync = (
-  fd: number,
-  buffer: Buffer,
-  offset: number,
-  length: number,
-  position: ?number,
-) => number;
+
+
+
+
+
+
+
+
 
 class ReadFileSteam extends stream.Readable {
-  _buffer: Buffer;
-  _fd: number;
-  _positions: ?{current: number, last: number};
-  _readSync: ReadSync;
-  bytesRead: number;
-  path: string | Buffer;
 
-  constructor(options: {
-    filePath: string | Buffer,
-    encoding: ?Encoding,
-    end: ?number,
-    fd: number,
-    highWaterMark: ?number,
-    readSync: ReadSync,
-    start: ?number,
-  }) {
-    const {highWaterMark, fd} = options;
+
+
+
+
+
+
+  constructor(options)
+
+
+
+
+
+
+
+  {const
+    highWaterMark = options.highWaterMark,fd = options.fd;
     // eslint-disable-next-line lint/flow-no-fixme
     // $FlowFixMe: Readable does accept null of undefined for that value.
-    super({highWaterMark});
+    super({ highWaterMark });
     this.bytesRead = 0;
     this.path = options.filePath;
     this._readSync = options.readSync;
     this._fd = fd;
-    this._buffer = new Buffer(1024);
-    const {start, end} = options;
+    this._buffer = new Buffer(1024);const
+    start = options.start,end = options.end;
     if (start != null) {
       this._readSync(fd, new Buffer(0), 0, 0, start);
     }
     if (end != null) {
-      this._positions = {current: start || 0, last: end + 1};
+      this._positions = { current: start || 0, last: end + 1 };
     }
   }
 
   _read(size) {
-    let bytesRead;
-    const {_buffer} = this;
+    let bytesRead;const
+    _buffer = this._buffer;
     do {
       const length = this._getLengthToRead();
       const position = this._positions && this._positions.current;
@@ -786,36 +786,36 @@ class ReadFileSteam extends stream.Readable {
     } while (this.push(bytesRead > 0 ? _buffer.slice(0, bytesRead) : null));
   }
 
-  _getLengthToRead() {
-    const {_positions, _buffer} = this;
+  _getLengthToRead() {const
+    _positions = this._positions,_buffer = this._buffer;
     if (_positions == null) {
       return _buffer.length;
     }
     const leftToRead = Math.max(0, _positions.last - _positions.current);
     return Math.min(_buffer.length, leftToRead);
-  }
-}
+  }}
 
-type WriteSync = (
-  fd: number,
-  buffer: Buffer,
-  offset: number,
-  length: number,
-  position?: number,
-) => number;
+
+
+
+
+
+
+
+
 
 class WriteFileStream extends stream.Writable {
-  bytesWritten: number;
-  path: string | Buffer;
-  _fd: number;
-  _writeSync: WriteSync;
 
-  constructor(opts: {
-    fd: number,
-    filePath: string | Buffer,
-    writeSync: WriteSync,
-    start: ?number,
-  }) {
+
+
+
+
+  constructor(opts)
+
+
+
+
+  {
     super();
     this.path = opts.filePath;
     this.bytesWritten = 0;
@@ -835,21 +835,21 @@ class WriteFileStream extends stream.Writable {
       return;
     }
     callback();
-  }
-}
+  }}
+
 
 function checkPathLength(entNames, filePath) {
   if (entNames.length > 32) {
     throw makeError(
-      'ENAMETOOLONG',
-      filePath,
-      'file path too long (or one of the intermediate ' +
-        'symbolic link resolutions)',
-    );
+    'ENAMETOOLONG',
+    filePath,
+    'file path too long (or one of the intermediate ' +
+    'symbolic link resolutions)');
+
   }
 }
 
-function pathStr(filePath: string | Buffer): string {
+function pathStr(filePath) {
   if (typeof filePath === 'string') {
     return filePath;
   }
@@ -857,11 +857,11 @@ function pathStr(filePath: string | Buffer): string {
 }
 
 function makeError(code, filePath, message) {
-  const err: $FlowFixMe = new Error(
-    filePath != null
-      ? `${code}: \`${filePath}\`: ${message}`
-      : `${code}: ${message}`,
-  );
+  const err = new Error(
+  filePath != null ?
+  `${code}: \`${filePath}\`: ${message}` :
+  `${code}: ${message}`);
+
   err.code = code;
   err.errno = constants[code];
   err.path = filePath;

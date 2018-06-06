@@ -185,7 +185,7 @@ const DEFAULT = {
   getUseGlobalHotkey: () => true,
   postMinifyProcess: x => x,
   postProcessModules: modules => modules,
-  postProcessBundleSourcemap: (_ref2) => {let code = _ref2.code,map = _ref2.map,outFileName = _ref2.outFileName;return { code, map };},
+  postProcessBundleSourcemap: _ref2 => {let code = _ref2.code,map = _ref2.map,outFileName = _ref2.outFileName;return { code, map };},
   getModulesRunBeforeMainModule: () => [],
   getWorkerPath: () => null };
 

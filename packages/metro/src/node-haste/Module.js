@@ -170,10 +170,10 @@ class Module {
   }
 
   /**
-     * We don't need to invalidate the TranformCache itself because it guarantees
-     * itself that if a source code changed we won't return the cached transformed
-     * code.
-     */
+       * We don't need to invalidate the TranformCache itself because it guarantees
+       * itself that if a source code changed we won't return the cached transformed
+       * code.
+       */
   invalidate() {
     this._sourceCode = null;
 
@@ -211,14 +211,14 @@ class Module {
   }
 
   /**
-     * If a custom Haste implementation is provided, then we use it to determine
-     * the actual Haste name instead of "@providesModule".
-     * `enforceHasteNameMatches` has been added to that it is easier to
-     * transition from a system using "@providesModule" to a system using another
-     * custom system, by throwing if inconsistencies are detected. For example,
-     * we could verify that the file's basename (ex. "bar/foo.js") is the same as
-     * the "@providesModule" name (ex. "foo").
-     */
+       * If a custom Haste implementation is provided, then we use it to determine
+       * the actual Haste name instead of "@providesModule".
+       * `enforceHasteNameMatches` has been added to that it is easier to
+       * transition from a system using "@providesModule" to a system using another
+       * custom system, by throwing if inconsistencies are detected. For example,
+       * we could verify that the file's basename (ex. "bar/foo.js") is the same as
+       * the "@providesModule" name (ex. "foo").
+       */
   _readHasteName() {
     const hasteImplModulePath = this._options.hasteImplModulePath;
     if (hasteImplModulePath == null) {
@@ -234,10 +234,10 @@ class Module {
   }
 
   /**
-     * We extract the Haste name from the `@providesModule` docbloc field. This is
-     * not allowed for modules living in `node_modules`, except if they are
-     * whitelisted.
-     */
+       * We extract the Haste name from the `@providesModule` docbloc field. This is
+       * not allowed for modules living in `node_modules`, except if they are
+       * whitelisted.
+       */
   _readHasteNameFromDocBlock() {
     const moduleDocBlock = this._readDocBlock();const
     providesModule = moduleDocBlock.providesModule;
@@ -248,8 +248,8 @@ class Module {
   }
 
   /**
-     * To what we read from the cache or worker, we need to add id and source.
-     */
+       * To what we read from the cache or worker, we need to add id and source.
+       */
   _finalizeReadResult(source, result) {
     return _extends({}, result, { source });
   }
@@ -297,9 +297,9 @@ class Module {
   }
 
   /**
-     * Shorthand for reading both from cache or from fresh for all call sites that
-     * are asynchronous by default.
-     */
+       * Shorthand for reading both from cache or from fresh for all call sites that
+       * are asynchronous by default.
+       */
   read(transformOptions) {var _this5 = this;return _asyncToGenerator(function* () {
       // TODO: T26134860 Cache layer lives inside the transformer now; just call
       // the transform method.
@@ -321,10 +321,10 @@ class Module {
   }
 
   /**
-     * Same as `readFresh`, but reads from the cache instead of transforming
-     * the file from source. This has the benefit of being synchronous. As a
-     * result it is possible to read many cached Module in a row, synchronously.
-     */
+       * Same as `readFresh`, but reads from the cache instead of transforming
+       * the file from source. This has the benefit of being synchronous. As a
+       * result it is possible to read many cached Module in a row, synchronously.
+       */
   readCached(transformOptions) {
     const key = stableObjectHash(transformOptions || {});
     let result = this._readResultsByOptionsKey.get(key);
@@ -337,9 +337,9 @@ class Module {
   }
 
   /**
-     * Read again from the TransformCache, on disk. `readCached` should be favored
-     * so it's faster in case the results are already in memory.
-     */
+       * Read again from the TransformCache, on disk. `readCached` should be favored
+       * so it's faster in case the results are already in memory.
+       */
   _readFromTransformCache(
   transformOptions,
   transformOptionsKey)
@@ -357,11 +357,11 @@ class Module {
   }
 
   /**
-     * Gathers relevant data about a module: source code, transformed code,
-     * dependencies, etc. This function reads and transforms the source from
-     * scratch. We don't repeat the same work as `readCached` because we assume
-     * call sites have called it already.
-     */
+       * Gathers relevant data about a module: source code, transformed code,
+       * dependencies, etc. This function reads and transforms the source from
+       * scratch. We don't repeat the same work as `readCached` because we assume
+       * call sites have called it already.
+       */
   readFresh(transformOptions) {var _this6 = this;
     const key = stableObjectHash(transformOptions || {});
     const promise = this._readPromises.get(key);

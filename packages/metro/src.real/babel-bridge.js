@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @emails oncall+javascript_foundation
- * @flow (won't like this)
+ *  (won't like this)
  * @format
  */
 
@@ -31,9 +31,9 @@ const resolvePlugins6 = require('babel-preset-react-native/lib/resolvePlugins');
 // register has side effects so don't include by default (only used in a test)
 const getBabelRegisterConfig6 = () => require('./babelRegisterOnly').config;
 // load given preset as a babel6 preset
-const getPreset6 = (preset: string) =>
-  // $FlowFixMe TODO t26372934 plugin require
-  require('babel-preset-' + preset);
+const getPreset6 = (preset
+// $FlowFixMe TODO t26372934 plugin require
+) => require('babel-preset-' + preset);
 
 // ## Babel 7 stuff
 
@@ -47,63 +47,63 @@ const babylon7 = require('metro-babylon7');
 const externalHelpersPlugin7 = require('babel-plugin-external-helpers');
 const inlineRequiresPlugin7 = require('babel-preset-fbjs/plugins/inline-requires');
 const makeHMRConfig7 = makeMakeHMRConfig7();
-function resolvePlugins7(plugins: Array<any>) {
-  /**
-   * from: babel-preset-react-native/lib/resolvePlugins
-   * "Ported" to Babel 7
-   *
-   * Manually resolve all default Babel plugins.
-   * `babel.transform` will attempt to resolve all base plugins relative to
-   * the file it's compiling. This makes sure that we're using the plugins
-   * installed in the react-native package.
-   */
-  type ModuleES6 = {__esModule?: boolean, default?: {}};
+function resolvePlugins7(plugins) {
+
+
+
+
+
+
+
+
+
+
   return plugins.map(plugin => {
     // Normalise plugin to an array.
     plugin = Array.isArray(plugin) ? plugin : [plugin];
     // Only resolve the plugin if it's a string reference.
     if (typeof plugin[0] === 'string') {
       // $FlowFixMe TODO t26372934 plugin require
-      const required: ModuleES6 | {} = require('@babel/plugin-' + plugin[0]);
+      const required = require('@babel/plugin-' + plugin[0]);
       // es6 import default?
       // $FlowFixMe should properly type this plugin structure
       plugin[0] = required.__esModule ? required.default : required;
     }
     return plugin;
-  });
-}
-
-module.exports = {
-  version: IS_BABEL7 ? 7 : 6,
-
-  // need to abstract the transform* funcs here since their name changed
-  transformSync: IS_BABEL7 ? babelCore7.transformSync : babelCore6.transform,
-  transformFileSync: IS_BABEL7
-    ? babelCore7.transformFileSync
-    : babelCore6.transformFile,
-  transformFromAstSync: IS_BABEL7
-    ? babelCore7.transformFromAstSync
-    : babelCore6.transformFromAst,
+  }); /**
+       * from: babel-preset-react-native/lib/resolvePlugins
+       * "Ported" to Babel 7
+       *
+       * Manually resolve all default Babel plugins.
+       * `babel.transform` will attempt to resolve all base plugins relative to
+       * the file it's compiling. This makes sure that we're using the plugins
+       * installed in the react-native package.
+       */}module.exports = { version: IS_BABEL7 ? 7 : 6, // need to abstract the transform* funcs here since their name changed
+  transformSync: IS_BABEL7 ? babelCore7.transformSync : babelCore6.transform, transformFileSync: IS_BABEL7 ? babelCore7.transformFileSync :
+  babelCore6.transformFile,
+  transformFromAstSync: IS_BABEL7 ?
+  babelCore7.transformFromAstSync :
+  babelCore6.transformFromAst,
 
   babelGenerate: IS_BABEL7 ? babelGenerate7 : babelGenerate6,
   babelTemplate: IS_BABEL7 ? babelTemplate7 : babelTemplate6,
   babelTraverse: IS_BABEL7 ? babelTraverse7 : babelTraverse6,
   babelTypes: IS_BABEL7 ? babelTypes7 : babelTypes6,
-  getBabelRegisterConfig: IS_BABEL7
-    ? getBabelRegisterConfig7
-    : getBabelRegisterConfig6,
+  getBabelRegisterConfig: IS_BABEL7 ?
+  getBabelRegisterConfig7 :
+  getBabelRegisterConfig6,
   babylon: IS_BABEL7 ? babylon7 : babylon6,
 
-  externalHelpersPlugin: IS_BABEL7
-    ? externalHelpersPlugin7
-    : externalHelpersPlugin6,
-  inlineRequiresPlugin: IS_BABEL7
-    ? inlineRequiresPlugin7
-    : inlineRequiresPlugin6,
+  externalHelpersPlugin: IS_BABEL7 ?
+  externalHelpersPlugin7 :
+  externalHelpersPlugin6,
+  inlineRequiresPlugin: IS_BABEL7 ?
+  inlineRequiresPlugin7 :
+  inlineRequiresPlugin6,
   makeHMRConfig: IS_BABEL7 ? makeHMRConfig7 : makeHMRConfig6,
   resolvePlugins: IS_BABEL7 ? resolvePlugins7 : resolvePlugins6,
-  getPreset: IS_BABEL7 ? getPreset7 : getPreset6,
-};
+  getPreset: IS_BABEL7 ? getPreset7 : getPreset6 };
+
 
 function makeMakeHMRConfig7() {
   // from: babel-preset-react-native/configs/hmr
@@ -119,10 +119,10 @@ function makeMakeHMRConfig7() {
   var hmrTransform = 'react-transform-hmr/lib/index.js';
   var transformPath = require.resolve(hmrTransform);
 
-  return function(options: mixed, filename?: string) {
-    var transform = filename
-      ? './' + path.relative(path.dirname(filename), transformPath) // packager can't handle absolute paths
-      : hmrTransform;
+  return function (options, filename) {
+    var transform = filename ?
+    './' + path.relative(path.dirname(filename), transformPath) // packager can't handle absolute paths
+    : hmrTransform;
 
     // Fix the module path to use '/' on Windows.
     if (path.sep === '\\') {
@@ -131,20 +131,20 @@ function makeMakeHMRConfig7() {
 
     return {
       plugins: [
-        [
-          require('babel-plugin-react-transform').default,
-          {
-            transforms: [
-              {
-                transform,
-                imports: ['react'],
-                locals: ['module'],
-              },
-            ],
-          },
-        ],
-      ],
-    };
+      [
+      require('babel-plugin-react-transform').default,
+      {
+        transforms: [
+        {
+          transform,
+          imports: ['react'],
+          locals: ['module'] }] }]] };
+
+
+
+
+
+
   };
 }
 
@@ -183,15 +183,15 @@ function getPreset7() {
       plugins.push('transform-object-assign');
     }
     if (src.indexOf('for') !== -1 && src.indexOf('of') !== -1) {
-      plugins.push(['transform-for-of', {loose: true}]);
+      plugins.push(['transform-for-of', { loose: true }]);
       if (src.indexOf('Symbol') !== -1) {
         plugins.push(transformSymbolMember());
       }
     }
     if (
-      src.indexOf('React.createClass') !== -1 ||
-      src.indexOf('createReactClass') !== -1
-    ) {
+    src.indexOf('React.createClass') !== -1 ||
+    src.indexOf('createReactClass') !== -1)
+    {
       plugins.push('transform-react-display-name');
     }
     if (src.indexOf('import(')) {
@@ -203,21 +203,21 @@ function getPreset7() {
     const plugins = [];
 
     plugins.push(
-      // 'syntax-class-properties',
-      // 'syntax-trailing-function-commas',
-      'proposal-class-properties',
-      'transform-block-scoping',
-      'transform-computed-properties',
-      'transform-destructuring',
-      'transform-function-name',
-      'transform-literals',
-      'transform-parameters',
-      'transform-shorthand-properties',
-      'transform-flow-strip-types',
-      'transform-react-jsx',
-      'transform-regenerator',
-      ['transform-modules-commonjs', {strict: false, allowTopLevelThis: true}],
-    );
+    // 'syntax-class-properties',
+    // 'syntax-trailing-function-commas',
+    'proposal-class-properties',
+    'transform-block-scoping',
+    'transform-computed-properties',
+    'transform-destructuring',
+    'transform-function-name',
+    'transform-literals',
+    'transform-parameters',
+    'transform-shorthand-properties',
+    'transform-flow-strip-types',
+    'transform-react-jsx',
+    'transform-regenerator',
+    ['transform-modules-commonjs', { strict: false, allowTopLevelThis: true }]);
+
 
     if (src !== null && src !== undefined) {
       addPluginsWhenSourceNeedsIt(src, plugins);
@@ -230,19 +230,19 @@ function getPreset7() {
     return {
       comments: false,
       compact: true,
-      plugins: resolvePlugins7(plugins),
-    };
+      plugins: resolvePlugins7(plugins) };
+
   };
 
   let base;
   let devTools;
 
   // TODO: options probably has more properties...
-  return (options: {withDevTools?: boolean}) => {
+  return options => {
     if (options.withDevTools == null) {
       const env = process.env.BABEL_ENV || process.env.NODE_ENV;
       if (!env || env === 'development') {
-        return devTools || (devTools = getPreset(null, {dev: true}));
+        return devTools || (devTools = getPreset(null, { dev: true }));
       }
     }
     return base || (base = getPreset(null));
@@ -264,17 +264,17 @@ function transformSymbolMember() {
   /*eslint consistent-return: 0*/
 
   /**
-   * Transforms function properties of the `Symbol` into
-   * the presence check, and fallback string "@@<name>".
-   *
-   * Example:
-   *
-   *   Symbol.iterator;
-   *
-   * Transformed to:
-   *
-   *   typeof Symbol.iterator === 'function' ? Symbol.iterator : '@@iterator';
-   */
+                                   * Transforms function properties of the `Symbol` into
+                                   * the presence check, and fallback string "@@<name>".
+                                   *
+                                   * Example:
+                                   *
+                                   *   Symbol.iterator;
+                                   *
+                                   * Transformed to:
+                                   *
+                                   *   typeof Symbol.iterator === 'function' ? Symbol.iterator : '@@iterator';
+                                   */
   return function symbolMember() {
     const t = babelTypes7;
 
@@ -288,23 +288,23 @@ function transformSymbolMember() {
           const node = path.node;
 
           path.replaceWith(
-            t.conditionalExpression(
-              t.binaryExpression(
-                '===',
-                t.unaryExpression('typeof', t.identifier('Symbol'), true),
-                t.stringLiteral('function'),
-              ),
-              node,
-              t.stringLiteral(`@@${node.property.name}`),
-            ),
-          );
+          t.conditionalExpression(
+          t.binaryExpression(
+          '===',
+          t.unaryExpression('typeof', t.identifier('Symbol'), true),
+          t.stringLiteral('function')),
+
+          node,
+          t.stringLiteral(`@@${node.property.name}`)));
+
+
 
           // We should stop to avoid infinite recursion, since Babel
           // traverses replaced path, and again would hit our transform.
           path.stop();
-        },
-      },
-    };
+        } } };
+
+
   };
 
   function isAppropriateMember(path) {
@@ -314,8 +314,8 @@ function transformSymbolMember() {
       path.parentPath.type !== 'AssignmentExpression' &&
       node.object.type === 'Identifier' &&
       node.object.name === 'Symbol' &&
-      node.property.type === 'Identifier'
-    );
+      node.property.type === 'Identifier');
+
   }
 }
 
@@ -332,8 +332,8 @@ function transformDynamicImport() {
   'use strict';
 
   const buildImport = babelTemplate7(
-    'Promise.resolve().then(() => require(ARGS))',
-  );
+  'Promise.resolve().then(() => require(ARGS))');
+
 
   const TYPE_IMPORT = 'Import';
 
@@ -345,11 +345,11 @@ function transformDynamicImport() {
         if (path.node.callee.type !== TYPE_IMPORT) {
           return;
         }
-        const newImport = buildImport({ARGS: path.node.arguments});
+        const newImport = buildImport({ ARGS: path.node.arguments });
         path.replaceWith(newImport);
-      },
-    },
-  };
+      } } };
+
+
 
   return plugin;
 }
@@ -373,24 +373,24 @@ function getBabelRegisterConfig7() {
   var _only = [];
 
   const PLUGINS = [
-    'transform-flow-strip-types',
-    'proposal-object-rest-spread',
-    'proposal-class-properties',
-  ];
+  'transform-flow-strip-types',
+  'proposal-object-rest-spread',
+  'proposal-class-properties'];
 
-  function config(onlyList: Array<string>) {
+
+  function config(onlyList) {
     _only = _only.concat(onlyList);
     return {
       presets: [],
       plugins: PLUGINS.map(pluginName =>
-        // $FlowFixMe TODO t26372934 plugin require
-        require(`@babel/plugin-${pluginName}`),
-      ),
+      // $FlowFixMe TODO t26372934 plugin require
+      require(`@babel/plugin-${pluginName}`)),
+
       only: _only,
       retainLines: true,
       sourceMaps: 'inline',
-      babelrc: false,
-    };
+      babelrc: false };
+
   }
 
   return config;

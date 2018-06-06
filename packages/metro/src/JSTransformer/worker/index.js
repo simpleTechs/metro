@@ -264,7 +264,7 @@ dynamicDepsInPackages)
 
 
   return transformResult instanceof Promise ?
-  transformResult.then((_ref) => {let ast = _ref.ast;return postTransform.apply(undefined, postTransformArgs.concat([ast]));}) :
+  transformResult.then(_ref => {let ast = _ref.ast;return postTransform.apply(undefined, postTransformArgs.concat([ast]));}) :
   postTransform.apply(undefined, postTransformArgs.concat([transformResult.ast]));
 }
 

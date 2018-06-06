@@ -22,9 +22,9 @@ const path = require('path');
 const PATH_RE = /^(.+?)(\.([^.]+))?\.([^.]+)$/;
 
 /**
-                                                 * Extract the components of a file path that can have a platform specifier: Ex.
-                                                 * `index.ios.js` is specific to the `ios` platform and has the extension `js`.
-                                                 */
+                                                                                                 * Extract the components of a file path that can have a platform specifier: Ex.
+                                                                                                 * `index.ios.js` is specific to the `ios` platform and has the extension `js`.
+                                                                                                 */
 function parsePlatformFilePath(
 filePath,
 platforms)

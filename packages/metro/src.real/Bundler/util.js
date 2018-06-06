@@ -4,99 +4,99 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
-'use strict';
+'use strict';var _slicedToArray = function () {function sliceIterator(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"]) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}return function (arr, i) {if (Array.isArray(arr)) {return arr;} else if (Symbol.iterator in Object(arr)) {return sliceIterator(arr, i);} else {throw new TypeError("Invalid attempt to destructure non-iterable instance");}};}();var _require =
 
-const {babylon} = require('../babel-bridge');
-const {babelTypes} = require('../babel-bridge');
+require('../babel-bridge');const babylon = _require.babylon;var _require2 =
+require('../babel-bridge');const babelTypes = _require2.babelTypes;
 
-import type {AssetDataWithoutFiles} from '../Assets';
-import type {ModuleTransportLike} from '../shared/types.flow';
-import type {Ast} from '@babel/core';
+
+
+
 
 // Structure of the object: dir.name.scale = asset
-export type RemoteFileMap = {
-  [string]: {
-    [string]: {
-      [number]: string,
-    },
-  },
-  __proto__: null,
-};
+
+
+
+
+
+
+
+
 
 // Structure of the object: platform.dir.name.scale = asset
-export type PlatformRemoteFileMap = {
-  [string]: RemoteFileMap,
-  __proto__: null,
-};
 
-type SubTree<T: ModuleTransportLike> = (
-  moduleTransport: T,
-  moduleTransportsByPath: Map<string, T>,
-) => Iterable<number>;
+
+
+
+
+
+
+
+
 
 const assetPropertyBlacklist = new Set(['files', 'fileSystemLocation', 'path']);
 
 function generateAssetCodeFileAst(
-  assetRegistryPath: string,
-  assetDescriptor: AssetDataWithoutFiles,
-): Ast {
+assetRegistryPath,
+assetDescriptor)
+{
   const properDescriptor = filterObject(
-    assetDescriptor,
-    assetPropertyBlacklist,
-  );
+  assetDescriptor,
+  assetPropertyBlacklist);
+
 
   // {...}
   const descriptorAst = babylon.parseExpression(
-    JSON.stringify(properDescriptor),
-  );
+  JSON.stringify(properDescriptor));
+
   const t = babelTypes;
 
   // module.exports
   const moduleExports = t.memberExpression(
-    t.identifier('module'),
-    t.identifier('exports'),
-  );
+  t.identifier('module'),
+  t.identifier('exports'));
+
 
   // require('AssetRegistry')
   const requireCall = t.callExpression(t.identifier('require'), [
-    t.stringLiteral(assetRegistryPath),
-  ]);
+  t.stringLiteral(assetRegistryPath)]);
+
 
   // require('AssetRegistry').registerAsset
   const registerAssetFunction = t.memberExpression(
-    requireCall,
-    t.identifier('registerAsset'),
-  );
+  requireCall,
+  t.identifier('registerAsset'));
+
 
   // require('AssetRegistry').registerAsset({...})
   const registerAssetCall = t.callExpression(registerAssetFunction, [
-    descriptorAst,
-  ]);
+  descriptorAst]);
+
 
   return t.file(
-    t.program([
-      t.expressionStatement(
-        t.assignmentExpression('=', moduleExports, registerAssetCall),
-      ),
-    ]),
-  );
+  t.program([
+  t.expressionStatement(
+  t.assignmentExpression('=', moduleExports, registerAssetCall))]));
+
+
+
 }
 
 /**
- * Generates the code involved in requiring an asset, but to be loaded remotely.
- * If the asset cannot be found within the map, then it falls back to the
- * standard asset.
- */
+   * Generates the code involved in requiring an asset, but to be loaded remotely.
+   * If the asset cannot be found within the map, then it falls back to the
+   * standard asset.
+   */
 function generateRemoteAssetCodeFileAst(
-  assetSourceResolverPath: string,
-  assetDescriptor: AssetDataWithoutFiles,
-  remoteServer: string,
-  remoteFileMap: RemoteFileMap,
-): ?Ast {
+assetSourceResolverPath,
+assetDescriptor,
+remoteServer,
+remoteFileMap)
+{
   const t = babelTypes;
 
   const file = remoteFileMap[assetDescriptor.fileSystemLocation];
@@ -108,21 +108,21 @@ function generateRemoteAssetCodeFileAst(
 
   // require('AssetSourceResolver')
   const requireCall = t.callExpression(t.identifier('require'), [
-    t.stringLiteral(assetSourceResolverPath),
-  ]);
+  t.stringLiteral(assetSourceResolverPath)]);
+
 
   // require('AssetSourceResolver').pickScale
   const pickScale = t.memberExpression(requireCall, t.identifier('pickScale'));
 
   // require('AssetSourceResolver').pickScale([2, 3, ...])
   const call = t.callExpression(pickScale, [
-    t.arrayExpression(
-      Object.keys(descriptor)
-        .map(Number)
-        .sort((a, b) => a - b)
-        .map(scale => t.numericLiteral(scale)),
-    ),
-  ]);
+  t.arrayExpression(
+  Object.keys(descriptor).
+  map(Number).
+  sort((a, b) => a - b).
+  map(scale => t.numericLiteral(scale)))]);
+
+
 
   // {2: 'path/to/image@2x', 3: 'path/to/image@3x', ...}
   const data = babylon.parseExpression(JSON.stringify(descriptor));
@@ -139,35 +139,35 @@ function generateRemoteAssetCodeFileAst(
 
   // module.exports
   const moduleExports = t.memberExpression(
-    t.identifier('module'),
-    t.identifier('exports'),
-  );
+  t.identifier('module'),
+  t.identifier('exports'));
+
 
   return t.file(
-    t.program([
-      t.expressionStatement(
-        t.assignmentExpression(
-          '=',
-          moduleExports,
-          t.objectExpression([
-            t.objectProperty(t.stringLiteral('width'), width),
-            t.objectProperty(t.stringLiteral('height'), height),
-            t.objectProperty(t.stringLiteral('uri'), uri),
-          ]),
-        ),
-      ),
-    ]),
-  );
+  t.program([
+  t.expressionStatement(
+  t.assignmentExpression(
+  '=',
+  moduleExports,
+  t.objectExpression([
+  t.objectProperty(t.stringLiteral('width'), width),
+  t.objectProperty(t.stringLiteral('height'), height),
+  t.objectProperty(t.stringLiteral('uri'), uri)])))]));
+
+
+
+
+
 }
 
 // Test extension against all types supported by image-size module.
 // If it's not one of these, we won't treat it as an image.
-function isAssetTypeAnImage(type: string): boolean {
+function isAssetTypeAnImage(type) {
   return (
     ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'psd', 'svg', 'tiff'].indexOf(
-      type,
-    ) !== -1
-  );
+    type) !==
+    -1);
+
 }
 
 function filterObject(object, blacklist) {
@@ -178,11 +178,11 @@ function filterObject(object, blacklist) {
   return copied;
 }
 
-function createRamBundleGroups<T: ModuleTransportLike>(
-  ramGroups: $ReadOnlyArray<string>,
-  groupableModules: $ReadOnlyArray<T>,
-  subtree: SubTree<T>,
-): Map<number, Set<number>> {
+function createRamBundleGroups(
+ramGroups,
+groupableModules,
+subtree)
+{
   // build two maps that allow to lookup module data
   // by path or (numeric) module id;
   const byPath = new Map();
@@ -193,40 +193,40 @@ function createRamBundleGroups<T: ModuleTransportLike>(
   });
 
   // build a map of group root IDs to an array of module IDs in the group
-  const result: Map<number, Set<number>> = new Map(
-    ramGroups.map(modulePath => {
-      const root = byPath.get(modulePath);
-      if (root == null) {
-        throw Error(`Group root ${modulePath} is not part of the bundle`);
-      }
-      return [
-        root.id,
-        // `subtree` yields the IDs of all transitive dependencies of a module
-        new Set(subtree(root, byPath)),
-      ];
-    }),
-  );
+  const result = new Map(
+  ramGroups.map(modulePath => {
+    const root = byPath.get(modulePath);
+    if (root == null) {
+      throw Error(`Group root ${modulePath} is not part of the bundle`);
+    }
+    return [
+    root.id,
+    // `subtree` yields the IDs of all transitive dependencies of a module
+    new Set(subtree(root, byPath))];
+
+  }));
+
 
   if (ramGroups.length > 1) {
     // build a map of all grouped module IDs to an array of group root IDs
     const all = new ArrayMap();
-    for (const [parent, children] of result) {
+    for (const _ref of result) {var _ref2 = _slicedToArray(_ref, 2);const parent = _ref2[0];const children = _ref2[1];
       for (const module of children) {
         all.get(module).push(parent);
       }
     }
 
     // find all module IDs that are part of more than one group
-    const doubles = filter(all, ([, parents]) => parents.length > 1);
-    for (const [moduleId, parents] of doubles) {
+    const doubles = filter(all, (_ref3) => {var _ref4 = _slicedToArray(_ref3, 2);let parents = _ref4[1];return parents.length > 1;});
+    for (const _ref5 of doubles) {var _ref6 = _slicedToArray(_ref5, 2);const moduleId = _ref6[0];const parents = _ref6[1];
       const parentNames = parents.map(byId.get, byId);
       const lastName = parentNames.pop();
       throw new Error(
-        `Module ${byId.get(moduleId) ||
-          moduleId} belongs to groups ${parentNames.join(', ')}, and ${String(
-          lastName,
-        )}. Ensure that each module is only part of one group.`,
-      );
+      `Module ${byId.get(moduleId) ||
+      moduleId} belongs to groups ${parentNames.join(', ')}, and ${String(
+      lastName)
+      }. Ensure that each module is only part of one group.`);
+
     }
   }
 
@@ -241,20 +241,19 @@ function* filter(iterator, predicate) {
   }
 }
 
-class ArrayMap<K, V> extends Map<K, Array<V>> {
-  get(key: K): Array<V> {
+class ArrayMap extends Map {
+  get(key) {
     let array = super.get(key);
     if (!array) {
       array = [];
       this.set(key, array);
     }
     return array;
-  }
-}
+  }}
+
 
 module.exports = {
   createRamBundleGroups,
   generateAssetCodeFileAst,
   generateRemoteAssetCodeFileAst,
-  isAssetTypeAnImage,
-};
+  isAssetTypeAnImage };

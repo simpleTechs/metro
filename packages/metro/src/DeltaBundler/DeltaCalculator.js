@@ -31,11 +31,11 @@ require('events');const EventEmitter = _require2.EventEmitter;
 
 
 /**
-                                                                * This class is in charge of calculating the delta of changed modules that
-                                                                * happen between calls. To do so, it subscribes to file changes, so it can
-                                                                * traverse the files that have been changed between calls and avoid having to
-                                                                * traverse the whole dependency tree for trivial small changes.
-                                                                */
+                                                                                                                               * This class is in charge of calculating the delta of changed modules that
+                                                                                                                               * happen between calls. To do so, it subscribes to file changes, so it can
+                                                                                                                               * traverse the files that have been changed between calls and avoid having to
+                                                                                                                               * traverse the whole dependency tree for trivial small changes.
+                                                                                                                               */
 class DeltaCalculator extends EventEmitter {
 
 
@@ -215,7 +215,7 @@ class DeltaCalculator extends EventEmitter {
 
 
 
-    _handleMultipleFileChanges = (_ref) => {let eventsQueue = _ref.eventsQueue;
+    _handleMultipleFileChanges = _ref => {let eventsQueue = _ref.eventsQueue;
       eventsQueue.forEach(this._handleFileChange);
     };this.
 
@@ -224,7 +224,7 @@ class DeltaCalculator extends EventEmitter {
 
 
 
-    _handleFileChange = (_ref2) =>
+    _handleFileChange = _ref2 =>
 
 
 

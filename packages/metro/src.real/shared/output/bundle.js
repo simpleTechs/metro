@@ -4,11 +4,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
-'use strict';
+'use strict';var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};
 
 const Server = require('../../Server');
 
@@ -16,57 +16,57 @@ const meta = require('./meta');
 const relativizeSourceMapInline = require('../../lib/relativizeSourceMap');
 const writeFile = require('./writeFile');
 
-import type {OutputOptions, RequestOptions} from '../types.flow';
-import type {MetroSourceMap} from 'metro-source-map';
+
+
 
 function buildBundle(
-  packagerClient: Server,
-  requestOptions: RequestOptions,
-): Promise<{code: string, map: string}> {
-  return packagerClient.build({
-    ...Server.DEFAULT_BUNDLE_OPTIONS,
-    ...requestOptions,
+packagerClient,
+requestOptions)
+{
+  return packagerClient.build(_extends({},
+  Server.DEFAULT_BUNDLE_OPTIONS,
+  requestOptions, {
     bundleType: 'bundle',
-    isolateModuleIDs: true,
-  });
+    isolateModuleIDs: true }));
+
 }
 
 function relativateSerializedMap(
-  map: string,
-  sourceMapSourcesRoot: string,
-): string {
-  const sourceMap = (JSON.parse(map): MetroSourceMap);
+map,
+sourceMapSourcesRoot)
+{
+  const sourceMap = JSON.parse(map);
   relativizeSourceMapInline(sourceMap, sourceMapSourcesRoot);
   return JSON.stringify(sourceMap);
 }
 
 function saveBundleAndMap(
-  bundle: {code: string, map: string},
-  options: OutputOptions,
-  log: (...args: Array<string>) => void,
-): Promise<mixed> {
-  const {
-    bundleOutput,
-    bundleEncoding: encoding,
-    sourcemapOutput,
-    sourcemapSourcesRoot,
-  } = options;
+bundle,
+options,
+log)
+{const
 
-  log('Writing bundle output to:', bundleOutput);
+  bundleOutput =
 
-  const {code} = bundle;
+
+
+  options.bundleOutput,encoding = options.bundleEncoding,sourcemapOutput = options.sourcemapOutput,sourcemapSourcesRoot = options.sourcemapSourcesRoot;
+
+  log('Writing bundle output to:', bundleOutput);const
+
+  code = bundle.code;
   const writeBundle = writeFile(bundleOutput, code, encoding);
   const writeMetadata = writeFile(
-    bundleOutput + '.meta',
-    meta(code, encoding),
-    'binary',
-  );
-  Promise.all([writeBundle, writeMetadata]).then(() =>
-    log('Done writing bundle output'),
-  );
+  bundleOutput + '.meta',
+  meta(code, encoding),
+  'binary');
 
-  if (sourcemapOutput) {
-    let {map} = bundle;
+  Promise.all([writeBundle, writeMetadata]).then(() =>
+  log('Done writing bundle output'));
+
+
+  if (sourcemapOutput) {let
+    map = bundle.map;
     if (sourcemapSourcesRoot !== undefined) {
       log('start relativating source map');
       map = relativateSerializedMap(map, sourcemapSourcesRoot);

@@ -17,9 +17,9 @@ const path = require('path');
 const VERSION = require('../../package.json').version;
 
 /**
-                                                        * Returns a function that will return the transform cache key based on some
-                                                        * passed transform options.
-                                                        */
+                                                                                                               * Returns a function that will return the transform cache key based on some
+                                                                                                               * passed transform options.
+                                                                                                               */
 function getTransformCacheKeyFn(opts)
 
 

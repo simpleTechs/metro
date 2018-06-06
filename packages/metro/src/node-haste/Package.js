@@ -36,9 +36,9 @@ class Package {
   }
 
   /**
-     * The `browser` field and replacement behavior is specified in
-     * https://github.com/defunctzombie/package-browser-field-spec.
-     */
+       * The `browser` field and replacement behavior is specified in
+       * https://github.com/defunctzombie/package-browser-field-spec.
+       */
   getMain() {
     const json = this.read();
 

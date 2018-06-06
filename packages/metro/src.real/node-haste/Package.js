@@ -4,31 +4,31 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
-'use strict';
+'use strict';var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};
 
 const fs = require('fs');
 const isAbsolutePath = require('absolute-path');
 const path = require('path');
 
-type PackageContent = {
-  name: string,
-  'react-native': mixed,
-  browser: mixed,
-  main: ?string,
-};
+
+
+
+
+
+
 
 class Package {
-  path: string;
-  root: string;
-  type: string;
 
-  _content: ?PackageContent;
 
-  constructor({file}: {file: string}) {
+
+
+
+
+  constructor(_ref) {let file = _ref.file;
     this.path = path.resolve(file);
     this.root = path.dirname(this.path);
     this.type = 'Package';
@@ -36,10 +36,10 @@ class Package {
   }
 
   /**
-   * The `browser` field and replacement behavior is specified in
-   * https://github.com/defunctzombie/package-browser-field-spec.
-   */
-  getMain(): string {
+     * The `browser` field and replacement behavior is specified in
+     * https://github.com/defunctzombie/package-browser-field-spec.
+     */
+  getMain() {
     const json = this.read();
 
     let main;
@@ -62,10 +62,10 @@ class Package {
 
       for (const variant of variants) {
         const winner =
-          replacements[variant] ||
-          replacements[variant + '.js'] ||
-          replacements[variant + '.json'] ||
-          replacements[variant.replace(/(\.js|\.json)$/, '')];
+        replacements[variant] ||
+        replacements[variant + '.js'] ||
+        replacements[variant + '.json'] ||
+        replacements[variant.replace(/(\.js|\.json)$/, '')];
 
         if (winner) {
           main = winner;
@@ -78,11 +78,11 @@ class Package {
     return path.join(this.root, main);
   }
 
-  isHaste(): boolean {
+  isHaste() {
     return !!this.read().name;
   }
 
-  getName(): string {
+  getName() {
     return this.read().name;
   }
 
@@ -90,7 +90,7 @@ class Package {
     this._content = null;
   }
 
-  redirectRequire(name: string): string | false {
+  redirectRequire(name) {
     const json = this.read();
     const replacements = getReplacements(json);
 
@@ -101,10 +101,10 @@ class Package {
     if (!isAbsolutePath(name)) {
       const replacement = replacements[name];
       // support exclude with "someDependency": false
-      return replacement === false
-        ? false
-        : /* $FlowFixMe: type of replacements is not being validated */
-          replacement || name;
+      return replacement === false ?
+      false :
+      /* $FlowFixMe: type of replacements is not being validated */
+      replacement || name;
     }
 
     let relPath = './' + path.relative(this.root, name);
@@ -129,24 +129,24 @@ class Package {
 
     if (redirect) {
       return path.join(
-        this.root,
-        /* $FlowFixMe: `getReplacements` doesn't validate the return value. */
-        redirect,
-      );
+      this.root,
+      /* $FlowFixMe: `getReplacements` doesn't validate the return value. */
+      redirect);
+
     }
 
     return name;
   }
 
-  read(): PackageContent {
+  read() {
     if (this._content == null) {
       this._content = JSON.parse(fs.readFileSync(this.path, 'utf8'));
     }
     return this._content;
-  }
-}
+  }}
 
-function getReplacements(pkg: PackageContent): ?{[string]: string | boolean} {
+
+function getReplacements(pkg) {
   let rn = pkg['react-native'];
   let browser = pkg.browser;
   if (rn == null && browser == null) {
@@ -162,7 +162,7 @@ function getReplacements(pkg: PackageContent): ?{[string]: string | boolean} {
   }
   // merge with "browser" as default,
   // "react-native" as override
-  return {...browser, ...rn};
+  return _extends({}, browser, rn);
 }
 
 module.exports = Package;

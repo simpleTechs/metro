@@ -54,15 +54,15 @@ const MAX_PROGRESS_BAR_CHAR_WIDTH = 16;
 
 
 /**
-                                         * We try to print useful information to the terminal for interactive builds.
-                                         * This implements the `Reporter` interface from the './reporting' module.
-                                         */
+                                                                                 * We try to print useful information to the terminal for interactive builds.
+                                                                                 * This implements the `Reporter` interface from the './reporting' module.
+                                                                                 */
 class TerminalReporter {
   /**
-                         * The bundle builds for which we are actively maintaining the status on the
-                         * terminal, ie. showing a progress bar. There can be several bundles being
-                         * built at the same time.
-                         */
+                                               * The bundle builds for which we are actively maintaining the status on the
+                                               * terminal, ie. showing a progress bar. There can be several bundles being
+                                               * built at the same time.
+                                               */
 
 
 
@@ -84,11 +84,11 @@ class TerminalReporter {
   }
 
   /**
-     * Construct a message that represents the progress of a
-     * single bundle build, for example:
-     *
-     *     BUNDLE [ios, dev, minified] foo.js  ▓▓▓▓▓░░░░░░░░░░░ 36.6% (4790/7922)
-     */
+       * Construct a message that represents the progress of a
+       * single bundle build, for example:
+       *
+       *     BUNDLE [ios, dev, minified] foo.js  ▓▓▓▓▓░░░░░░░░░░░ 36.6% (4790/7922)
+       */
   _getBundleStatusMessage(_ref,
 
 
@@ -222,9 +222,9 @@ class TerminalReporter {
   }
 
   /**
-     * This function is only concerned with logging and should not do state
-     * or terminal status updates.
-     */
+       * This function is only concerned with logging and should not do state
+       * or terminal status updates.
+       */
   _log(event) {
     switch (event.type) {
       case 'initialize_started':
@@ -267,10 +267,10 @@ class TerminalReporter {
   }
 
   /**
-     * We do not want to log the whole stacktrace for bundling error, because
-     * these are operational errors, not programming errors, and the stacktrace
-     * is not actionable to end users.
-     */
+       * We do not want to log the whole stacktrace for bundling error, because
+       * these are operational errors, not programming errors, and the stacktrace
+       * is not actionable to end users.
+       */
   _logBundlingError(error) {
     if (error instanceof AmbiguousModuleResolutionError) {
       const he = error.hasteError;
@@ -319,10 +319,10 @@ class TerminalReporter {
   }
 
   /**
-     * We use Math.pow(ratio, 2) to as a conservative measure of progress because
-     * we know the `totalCount` is going to progressively increase as well. We
-     * also prevent the ratio from going backwards.
-     */
+       * We use Math.pow(ratio, 2) to as a conservative measure of progress because
+       * we know the `totalCount` is going to progressively increase as well. We
+       * also prevent the ratio from going backwards.
+       */
   _updateBundleProgress(_ref2)
 
 
@@ -347,9 +347,9 @@ class TerminalReporter {
   }
 
   /**
-     * This function is exclusively concerned with updating the internal state.
-     * No logging or status updates should be done at this point.
-     */
+       * This function is exclusively concerned with updating the internal state.
+       * No logging or status updates should be done at this point.
+       */
   _updateState(event) {
     switch (event.type) {
       case 'bundle_build_done':
@@ -393,14 +393,14 @@ class TerminalReporter {
   }
 
   /**
-     * Return a status message that is always consistent with the current state
-     * of the application. Having this single function ensures we don't have
-     * different callsites overriding each other status messages.
-     */
+       * Return a status message that is always consistent with the current state
+       * of the application. Having this single function ensures we don't have
+       * different callsites overriding each other status messages.
+       */
   _getStatusMessage() {
     return [this._getDepGraphStatusMessage()].
     concat(
-    Array.from(this._activeBundles.entries()).map((_ref3) => {var _ref4 = _slicedToArray(_ref3, 2);let _ = _ref4[0],progress = _ref4[1];return (
+    Array.from(this._activeBundles.entries()).map(_ref3 => {var _ref4 = _slicedToArray(_ref3, 2);let _ = _ref4[0],progress = _ref4[1];return (
         this._getBundleStatusMessage(progress, 'in_progress'));})).
 
 
@@ -418,9 +418,9 @@ class TerminalReporter {
   }
 
   /**
-     * Single entry point for reporting events. That allows us to implement the
-     * corresponding JSON reporter easily and have a consistent reporting.
-     */
+       * Single entry point for reporting events. That allows us to implement the
+       * corresponding JSON reporter easily and have a consistent reporting.
+       */
   update(event) {
     this._log(event);
     this._updateState(event);

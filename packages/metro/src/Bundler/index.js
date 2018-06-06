@@ -196,9 +196,9 @@ class Bundler {
   }
 
   /**
-     * Returns the transform options related to a specific entry file, by calling
-     * the config parameter getTransformOptions().
-     */
+       * Returns the transform options related to a specific entry file, by calling
+       * the config parameter getTransformOptions().
+       */
   getTransformOptionsForEntryFile(
   entryFile,
   options,
@@ -220,9 +220,9 @@ class Bundler {
   }
 
   /*
-     * Helper method to return the global transform options that are kept in the
-     * Bundler.
-     */
+       * Helper method to return the global transform options that are kept in the
+       * Bundler.
+       */
   getGlobalTransformOptions()
 
 

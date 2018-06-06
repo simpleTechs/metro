@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
@@ -17,60 +17,60 @@ const Polyfill = require('./Polyfill');
 
 const toLocalPath = require('./lib/toLocalPath');
 
-import type {GlobalTransformCache} from '../lib/GlobalTransformCache';
-import type {
-  TransformCache,
-  GetTransformCacheKey,
-} from '../lib/TransformCaching';
-import type {Reporter} from '../lib/reporting';
-import type DependencyGraphHelpers from './DependencyGraph/DependencyGraphHelpers';
-import type {TransformCode} from './Module';
 
-type GetClosestPackageFn = (filePath: string) => ?string;
 
-type Options = {|
-  assetDependencies: Array<string>,
-  depGraphHelpers: DependencyGraphHelpers,
-  experimentalCaches: boolean,
-  hasteImplModulePath?: string,
-  getClosestPackage: GetClosestPackageFn,
-  getTransformCacheKey: GetTransformCacheKey,
-  globalTransformCache: ?GlobalTransformCache,
-  roots: $ReadOnlyArray<string>,
-  reporter: Reporter,
-  resetCache: boolean,
-  transformCache: TransformCache,
-  transformCode: TransformCode,
-|};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class ModuleCache {
-  _assetDependencies: Array<string>;
-  _depGraphHelpers: DependencyGraphHelpers;
-  _experimentalCaches: boolean;
-  _getClosestPackage: GetClosestPackageFn;
-  _getTransformCacheKey: GetTransformCacheKey;
-  _globalTransformCache: ?GlobalTransformCache;
-  _moduleCache: {[filePath: string]: Module, __proto__: null};
-  _packageCache: {[filePath: string]: Package, __proto__: null};
-  _packageModuleMap: WeakMap<Module, string>;
-  _platforms: Set<string>;
-  _transformCode: TransformCode;
-  _reporter: Reporter;
-  _roots: $ReadOnlyArray<string>;
-  _opts: Options;
 
-  constructor(options: Options, platforms: Set<string>) {
-    const {
-      assetDependencies,
-      depGraphHelpers,
-      experimentalCaches,
-      getClosestPackage,
-      getTransformCacheKey,
-      globalTransformCache,
-      roots,
-      reporter,
-      transformCode,
-    } = options;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  constructor(options, platforms) {const
+
+    assetDependencies =
+
+
+
+
+
+
+
+
+    options.assetDependencies,depGraphHelpers = options.depGraphHelpers,experimentalCaches = options.experimentalCaches,getClosestPackage = options.getClosestPackage,getTransformCacheKey = options.getTransformCacheKey,globalTransformCache = options.globalTransformCache,roots = options.roots,reporter = options.reporter,transformCode = options.transformCode;
     this._opts = options;
     this._assetDependencies = assetDependencies;
     this._experimentalCaches = experimentalCaches;
@@ -87,7 +87,7 @@ class ModuleCache {
     this._roots = roots;
   }
 
-  getModule(filePath: string): Module {
+  getModule(filePath) {
     if (!this._moduleCache[filePath]) {
       this._moduleCache[filePath] = new Module({
         depGraphHelpers: this._depGraphHelpers,
@@ -97,8 +97,8 @@ class ModuleCache {
         localPath: toLocalPath(this._roots, filePath),
         moduleCache: this,
         options: this._getModuleOptions(),
-        transformCode: this._transformCode,
-      });
+        transformCode: this._transformCode });
+
     }
     return this._moduleCache[filePath];
   }
@@ -107,12 +107,12 @@ class ModuleCache {
     return this._moduleCache;
   }
 
-  getAssetModule(filePath: string) {
+  getAssetModule(filePath) {
     if (!this._moduleCache[filePath]) {
       /* FixMe: AssetModule does not need all these options. This is because
-       * this is an incorrect OOP design in the first place: AssetModule, being
-       * simpler than a normal Module, should not inherit the Module class.
-       */
+                                        * this is an incorrect OOP design in the first place: AssetModule, being
+                                        * simpler than a normal Module, should not inherit the Module class.
+                                        */
       this._moduleCache[filePath] = new AssetModule({
         depGraphHelpers: this._depGraphHelpers,
         experimentalCaches: this._experimentalCaches,
@@ -123,22 +123,22 @@ class ModuleCache {
         moduleCache: this,
         options: this._getModuleOptions(),
         reporter: this._reporter,
-        transformCode: this._transformCode,
-      });
+        transformCode: this._transformCode });
+
     }
     return this._moduleCache[filePath];
   }
 
-  getPackage(filePath: string): Package {
+  getPackage(filePath) {
     if (!this._packageCache[filePath]) {
       this._packageCache[filePath] = new Package({
-        file: filePath,
-      });
+        file: filePath });
+
     }
     return this._packageCache[filePath];
   }
 
-  getPackageForModule(module: Module): ?Package {
+  getPackageForModule(module) {
     let packagePath = this._packageModuleMap.get(module);
     if (packagePath) {
       if (this._packageCache[packagePath]) {
@@ -157,7 +157,7 @@ class ModuleCache {
     return this.getPackage(packagePath);
   }
 
-  createPolyfill({file}: {file: string}) {
+  createPolyfill(_ref) {let file = _ref.file;
     /* $FlowFixMe: there are missing arguments. */
     return new Polyfill({
       depGraphHelpers: this._depGraphHelpers,
@@ -167,11 +167,11 @@ class ModuleCache {
       localPath: toLocalPath(this._roots, file),
       moduleCache: this,
       options: this._getModuleOptions(),
-      transformCode: this._transformCode,
-    });
+      transformCode: this._transformCode });
+
   }
 
-  processFileChange(type: string, filePath: string) {
+  processFileChange(type, filePath) {
     if (this._moduleCache[filePath]) {
       this._moduleCache[filePath].invalidate();
       delete this._moduleCache[filePath];
@@ -188,9 +188,9 @@ class ModuleCache {
       transformCache: this._opts.transformCache,
       globalTransformCache: this._opts.globalTransformCache,
       resetCache: this._opts.resetCache,
-      hasteImplModulePath: this._opts.hasteImplModulePath,
-    };
-  }
-}
+      hasteImplModulePath: this._opts.hasteImplModulePath };
+
+  }}
+
 
 module.exports = ModuleCache;

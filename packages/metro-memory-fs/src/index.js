@@ -94,11 +94,11 @@ const ASYNC_FUNC_NAMES = [
 
 
 /**
-               * Simulates `fs` API in an isolated, memory-based filesystem. This is useful
-               * for testing systems that rely on `fs` without affecting the real filesystem.
-               * This is meant to be a drop-in replacement/mock for `fs`, so it mimics
-               * closely the behavior of file path resolution and file accesses.
-               */
+                                           * Simulates `fs` API in an isolated, memory-based filesystem. This is useful
+                                           * for testing systems that rely on `fs` without affecting the real filesystem.
+                                           * This is meant to be a drop-in replacement/mock for `fs`, so it mimics
+                                           * closely the behavior of file path resolution and file accesses.
+                                           */
 class MemoryFs {
 
 
@@ -537,9 +537,9 @@ class MemoryFs {
   }
 
   /**
-     * Implemented according with
-     * http://man7.org/linux/man-pages/man7/path_resolution.7.html
-     */
+         * Implemented according with
+         * http://man7.org/linux/man-pages/man7/path_resolution.7.html
+         */
   _resolve(originalFilePath) {
     let filePath = originalFilePath;
     let drive = '';
@@ -679,8 +679,8 @@ class Stats {
 
 
   /**
-              * Don't keep a reference to the node as it may get mutated over time.
-              */
+                                    * Don't keep a reference to the node as it may get mutated over time.
+                                    */
   constructor(node) {
     this._type = node.type;
     this.dev = 1;

@@ -41,9 +41,9 @@ baseName)
 }
 
 /**
-   * Return `null` if the `filePath` doesn't have a valid extension, required
-   * to describe the type of an asset.
-   */
+     * Return `null` if the `filePath` doesn't have a valid extension, required
+     * to describe the type of an asset.
+     */
 function tryParse(filePath, platforms) {
   const result = parsePlatformFilePath(filePath, platforms);const
   dirPath = result.dirPath,baseName = result.baseName,platform = result.platform,extension = result.extension;

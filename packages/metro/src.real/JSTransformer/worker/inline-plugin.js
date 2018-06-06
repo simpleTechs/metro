@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
@@ -12,48 +12,48 @@
 
 const createInlinePlatformChecks = require('./inline-platform');
 
-import typeof {types as BabelTypes} from 'babel-core';
-import type {Ast} from 'babel-core';
 
-type Context = {types: BabelTypes};
 
-const env = {name: 'env'};
-const nodeEnv = {name: 'NODE_ENV'};
-const processId = {name: 'process'};
 
-const dev = {name: '__DEV__'};
 
-function inlinePlugin(context: Context) {
-  const t = context.types;
 
-  const {
-    isPlatformNode,
-    isPlatformSelectNode,
-    isPlatformOSSelect,
-    getReplacementForPlatformOSSelect,
-  } = createInlinePlatformChecks(t);
+const env = { name: 'env' };
+const nodeEnv = { name: 'NODE_ENV' };
+const processId = { name: 'process' };
+
+const dev = { name: '__DEV__' };
+
+function inlinePlugin(context) {
+  const t = context.types;var _createInlinePlatform =
+
+
+
+
+
+
+  createInlinePlatformChecks(t);const isPlatformNode = _createInlinePlatform.isPlatformNode,isPlatformSelectNode = _createInlinePlatform.isPlatformSelectNode,isPlatformOSSelect = _createInlinePlatform.isPlatformOSSelect,getReplacementForPlatformOSSelect = _createInlinePlatform.getReplacementForPlatformOSSelect;
 
   const isGlobal = binding => !binding;
 
   const isFlowDeclared = binding => t.isDeclareVariable(binding.path);
 
   const isGlobalOrFlowDeclared = binding =>
-    isGlobal(binding) || isFlowDeclared(binding);
+  isGlobal(binding) || isFlowDeclared(binding);
 
-  const isLeftHandSideOfAssignmentExpression = (node: Ast, parent) =>
-    t.isAssignmentExpression(parent) && parent.left === node;
+  const isLeftHandSideOfAssignmentExpression = (node, parent) =>
+  t.isAssignmentExpression(parent) && parent.left === node;
 
-  const isProcessEnvNodeEnv = (node: Ast, scope) =>
-    t.isIdentifier(node.property, nodeEnv) &&
-    t.isMemberExpression(node.object) &&
-    t.isIdentifier(node.object.property, env) &&
-    t.isIdentifier(node.object.object, processId) &&
-    isGlobal(scope.getBinding(processId.name));
+  const isProcessEnvNodeEnv = (node, scope) =>
+  t.isIdentifier(node.property, nodeEnv) &&
+  t.isMemberExpression(node.object) &&
+  t.isIdentifier(node.object.property, env) &&
+  t.isIdentifier(node.object.object, processId) &&
+  isGlobal(scope.getBinding(processId.name));
 
-  const isDev = (node: Ast, parent, scope) =>
-    t.isIdentifier(node, dev) &&
-    isGlobalOrFlowDeclared(scope.getBinding(dev.name)) &&
-    !t.isMemberExpression(parent);
+  const isDev = (node, parent, scope) =>
+  t.isIdentifier(node, dev) &&
+  isGlobalOrFlowDeclared(scope.getBinding(dev.name)) &&
+  !t.isMemberExpression(parent);
 
   function findProperty(objectExpression, key, fallback) {
     const property = objectExpression.properties.find(p => {
@@ -86,12 +86,12 @@ function inlinePlugin(context: Context) {
 
   return {
     visitor: {
-      Identifier(path: Object, state: Object) {
+      Identifier(path, state) {
         if (isDev(path.node, path.parent, path.scope)) {
           path.replaceWith(t.booleanLiteral(state.opts.dev));
         }
       },
-      MemberExpression(path: Object, state: Object) {
+      MemberExpression(path, state) {
         const node = path.node;
         const scope = path.scope;
         const opts = state.opts;
@@ -101,12 +101,12 @@ function inlinePlugin(context: Context) {
             path.replaceWith(t.stringLiteral(opts.platform));
           } else if (isProcessEnvNodeEnv(node, scope)) {
             path.replaceWith(
-              t.stringLiteral(opts.dev ? 'development' : 'production'),
-            );
+            t.stringLiteral(opts.dev ? 'development' : 'production'));
+
           }
         }
       },
-      CallExpression(path: Object, state: Object) {
+      CallExpression(path, state) {
         const node = path.node;
         const scope = path.scope;
         const arg = node.arguments[0];
@@ -115,18 +115,18 @@ function inlinePlugin(context: Context) {
         if (isPlatformSelectNode(node, scope, opts.isWrapped)) {
           if (hasStaticProperties(arg)) {
             const fallback = () =>
-              findProperty(arg, 'default', () => t.identifier('undefined'));
+            findProperty(arg, 'default', () => t.identifier('undefined'));
 
             path.replaceWith(findProperty(arg, opts.platform, fallback));
           }
         } else if (isPlatformOSSelect(node, scope, opts.isWrapped)) {
           path.replaceWith(
-            getReplacementForPlatformOSSelect(node, opts.platform),
-          );
+          getReplacementForPlatformOSSelect(node, opts.platform));
+
         }
-      },
-    },
-  };
+      } } };
+
+
 }
 
 module.exports = inlinePlugin;

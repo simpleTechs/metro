@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 
@@ -19,29 +19,29 @@ const ModuleCache = require('./ModuleCache');
 
 const defaults = require('../../defaults');
 const parsePlatformFilePath = require('../../node-haste/lib/parsePlatformFilePath');
-const path = require('path');
+const path = require('path');var _require =
 
-const {
-  ModuleResolver,
-} = require('../../node-haste/DependencyGraph/ModuleResolution');
-const {ModuleMap} = require('jest-haste-map');
 
-import type {Moduleish} from '../../node-haste/DependencyGraph/ResolutionRequest';
-import type {ResolveFn, TransformedCodeFile} from '../types.flow';
-import type {Extensions, Path} from './node-haste.flow';
 
-type ResolveOptions = {|
-  assetExts: Extensions,
-  extraNodeModules: {[id: string]: string},
-  +sourceExts: Extensions,
-  transformedFiles: {[path: Path]: TransformedCodeFile},
-|};
+require('../../node-haste/DependencyGraph/ModuleResolution');const ModuleResolver = _require.ModuleResolver;var _require2 =
+require('jest-haste-map');const ModuleMap = _require2.ModuleMap;
+
+
+
+
+
+
+
+
+
+
+
 
 const platforms = new Set(defaults.platforms);
 
 const GENERIC_PLATFORM = 'g';
 const PACKAGE_JSON = path.sep + 'package.json';
-const NULL_MODULE: Moduleish = {
+const NULL_MODULE = {
   path: '/',
   getPackage() {},
   hash() {
@@ -58,11 +58,11 @@ const NULL_MODULE: Moduleish = {
   },
   getName() {
     throw new Error('not implemented');
-  },
-};
+  } };
+
 
 // This function maps the ModuleGraph data structure to jest-haste-map's ModuleMap
-const createModuleMap = ({files, helpers, moduleCache, sourceExts}) => {
+const createModuleMap = (_ref) => {let files = _ref.files,helpers = _ref.helpers,moduleCache = _ref.moduleCache,sourceExts = _ref.sourceExts;
   const map = Object.create(null);
   files.forEach(filePath => {
     if (helpers.isNodeModulesDir(filePath)) {
@@ -85,7 +85,7 @@ const createModuleMap = ({files, helpers, moduleCache, sourceExts}) => {
       map[id] = Object.create(null);
     }
     const platform =
-      parsePlatformFilePath(filePath, platforms).platform || GENERIC_PLATFORM;
+    parsePlatformFilePath(filePath, platforms).platform || GENERIC_PLATFORM;
 
     const existingModule = map[id][platform];
     // 0 = Module, 1 = Package in jest-haste-map
@@ -93,20 +93,20 @@ const createModuleMap = ({files, helpers, moduleCache, sourceExts}) => {
 
     if (existingModule && existingModule[0] !== filePath) {
       throw new Error(
-        `@providesModule naming collision:\n` +
-          `  Duplicate module name: \`${id}\`\n` +
-          `  Paths: \`${filePath}\` collides with ` +
-          `\`${existingModule[0]}\`\n\n` +
-          'This error is caused by a @providesModule declaration ' +
-          'with the same name across two different files.',
-      );
+      `@providesModule naming collision:\n` +
+      `  Duplicate module name: \`${id}\`\n` +
+      `  Paths: \`${filePath}\` collides with ` +
+      `\`${existingModule[0]}\`\n\n` +
+      'This error is caused by a @providesModule declaration ' +
+      'with the same name across two different files.');
+
     }
   });
   return map;
 };
 
-exports.createResolveFn = function(options: ResolveOptions): ResolveFn {
-  const {assetExts, extraNodeModules, transformedFiles, sourceExts} = options;
+exports.createResolveFn = function (options) {const
+  assetExts = options.assetExts,extraNodeModules = options.extraNodeModules,transformedFiles = options.transformedFiles,sourceExts = options.sourceExts;
   const files = Object.keys(transformedFiles);
   function getTransformedFile(path) {
     const result = transformedFiles[path];
@@ -118,21 +118,21 @@ exports.createResolveFn = function(options: ResolveOptions): ResolveFn {
 
   const helpers = new DependencyGraphHelpers({
     assetExts,
-    providesModuleNodeModules: defaults.providesModuleNodeModules,
-  });
+    providesModuleNodeModules: defaults.providesModuleNodeModules });
+
 
   const hasteFS = new HasteFS(files);
   const moduleCache = new ModuleCache(
-    filePath => hasteFS.closest(filePath, 'package.json'),
-    getTransformedFile,
-  );
+  filePath => hasteFS.closest(filePath, 'package.json'),
+  getTransformedFile);
+
 
   const filesByDirNameIndex = new FilesByDirNameIndex(files);
   const assetResolutionCache = new AssetResolutionCache({
     assetExtensions: new Set(assetExts),
     getDirFiles: dirPath => filesByDirNameIndex.getAllFiles(dirPath),
-    platforms,
-  });
+    platforms });
+
   const moduleResolver = new ModuleResolver({
     dirExists: filePath => hasteFS.dirExists(filePath),
     doesFileExist: filePath => hasteFS.exists(filePath),
@@ -141,22 +141,22 @@ exports.createResolveFn = function(options: ResolveOptions): ResolveFn {
     moduleCache,
     moduleMap: new ModuleMap({
       duplicates: Object.create(null),
-      map: createModuleMap({files, helpers, moduleCache, sourceExts}),
-      mocks: Object.create(null),
-    }),
+      map: createModuleMap({ files, helpers, moduleCache, sourceExts }),
+      mocks: Object.create(null) }),
+
     preferNativePlatform: true,
     resolveAsset: (dirPath, assetName, platform) =>
-      assetResolutionCache.resolve(dirPath, assetName, platform),
-    sourceExts,
-  });
+    assetResolutionCache.resolve(dirPath, assetName, platform),
+    sourceExts });
+
 
   return (id, sourcePath, platform, _, callback) => {
     const from =
-      sourcePath != null
-        ? new Module(sourcePath, moduleCache, getTransformedFile(sourcePath))
-        : NULL_MODULE;
+    sourcePath != null ?
+    new Module(sourcePath, moduleCache, getTransformedFile(sourcePath)) :
+    NULL_MODULE;
     const allowHaste = !helpers.isNodeModulesDir(from.path);
-    return moduleResolver.resolveDependency(from, id, allowHaste, platform)
-      .path;
+    return moduleResolver.resolveDependency(from, id, allowHaste, platform).
+    path;
   };
 };

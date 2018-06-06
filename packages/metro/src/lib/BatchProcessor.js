@@ -29,12 +29,12 @@ const invariant = require('fbjs/lib/invariant');
 
 
 /**
-                                                  * We batch items together trying to minimize their processing, for example as
-                                                  * network queries. For that we wait a small moment before processing a batch.
-                                                  * We limit also the number of items we try to process in a single batch so that
-                                                  * if we have many items pending in a short amount of time, we can start
-                                                  * processing right away.
-                                                  */
+                                                                                                   * We batch items together trying to minimize their processing, for example as
+                                                                                                   * network queries. For that we wait a small moment before processing a batch.
+                                                                                                   * We limit also the number of items we try to process in a single batch so that
+                                                                                                   * if we have many items pending in a short amount of time, we can start
+                                                                                                   * processing right away.
+                                                                                                   */
 class BatchProcessor {
 
 
@@ -93,16 +93,16 @@ class BatchProcessor {
   _processQueueOnceReady() {
     if (this._queue.length >= this._options.maximumItems) {
       /* $FlowFixMe(>=0.63.0 site=react_native_fb) This comment suppresses an
-                                                            * error found when Flow v0.63 was deployed. To see the error delete this
-                                                            * comment and run Flow. */
+                                                                                                                 * error found when Flow v0.63 was deployed. To see the error delete this
+                                                                                                                 * comment and run Flow. */
       clearTimeout(this._timeoutHandle);
       process.nextTick(this._processQueue);
       return;
     }
     if (this._timeoutHandle == null) {
       /* $FlowFixMe(>=0.63.0 site=react_native_fb) This comment suppresses an
-                                       * error found when Flow v0.63 was deployed. To see the error delete this
-                                       * comment and run Flow. */
+                                                                       * error found when Flow v0.63 was deployed. To see the error delete this
+                                                                       * comment and run Flow. */
       this._timeoutHandle = setTimeout(
       this._processQueue,
       this._options.maximumDelayMs);

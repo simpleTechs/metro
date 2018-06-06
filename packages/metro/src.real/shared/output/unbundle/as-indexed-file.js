@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @flow
+ * 
  * @format
  */
 'use strict';
@@ -14,40 +14,40 @@ const MAGIC_UNBUNDLE_FILE_HEADER = require('./magic-number');
 const buildSourceMapWithMetaData = require('./build-unbundle-sourcemap-with-metadata');
 const fs = require('fs');
 const relativizeSourceMapInline = require('../../../lib/relativizeSourceMap');
-const writeSourceMap = require('./write-sourcemap');
+const writeSourceMap = require('./write-sourcemap');var _require =
 
-const {joinModules} = require('./util');
+require('./util');const joinModules = _require.joinModules;
 
-import type {RamBundleInfo} from '../../../DeltaBundler/Serializers/Serializers';
-import type {
-  ModuleGroups,
-  ModuleTransportLike,
-  OutputOptions,
-} from '../../types.flow';
+
+
+
+
+
+
 
 const SIZEOF_UINT32 = 4;
 
 /**
- * Saves all JS modules of an app as a single file, separated with null bytes.
- * The file begins with an offset table that contains module ids and their
- * lengths/offsets.
- * The module id for the startup code (prelude, polyfills etc.) is the
- * empty string.
- */
+                          * Saves all JS modules of an app as a single file, separated with null bytes.
+                          * The file begins with an offset table that contains module ids and their
+                          * lengths/offsets.
+                          * The module id for the startup code (prelude, polyfills etc.) is the
+                          * empty string.
+                          */
 function saveAsIndexedFile(
-  bundle: RamBundleInfo,
-  options: OutputOptions,
-  log: (...args: Array<string>) => void,
-): Promise<mixed> {
-  const {
-    bundleOutput,
-    bundleEncoding: encoding,
-    sourcemapOutput,
-    sourcemapSourcesRoot,
-  } = options;
+bundle,
+options,
+log)
+{const
 
-  log('start');
-  const {startupModules, lazyModules, groups} = bundle;
+  bundleOutput =
+
+
+
+  options.bundleOutput,encoding = options.bundleEncoding,sourcemapOutput = options.sourcemapOutput,sourcemapSourcesRoot = options.sourcemapSourcesRoot;
+
+  log('start');const
+  startupModules = bundle.startupModules,lazyModules = bundle.lazyModules,groups = bundle.groups;
   log('finish');
 
   const moduleGroups = createModuleGroups(groups, lazyModules);
@@ -55,26 +55,26 @@ function saveAsIndexedFile(
 
   log('Writing unbundle output to:', bundleOutput);
   const writeUnbundle = writeBuffers(
-    fs.createWriteStream(bundleOutput),
-    buildTableAndContents(startupCode, lazyModules, moduleGroups, encoding),
-  ).then(() => log('Done writing unbundle output'));
+  fs.createWriteStream(bundleOutput),
+  buildTableAndContents(startupCode, lazyModules, moduleGroups, encoding)).
+  then(() => log('Done writing unbundle output'));
 
   if (sourcemapOutput) {
     const sourceMap = buildSourceMapWithMetaData({
       startupModules: startupModules.concat(),
       lazyModules: lazyModules.concat(),
       moduleGroups,
-      fixWrapperOffset: true,
-    });
+      fixWrapperOffset: true });
+
     if (sourcemapSourcesRoot !== undefined) {
       relativizeSourceMapInline(sourceMap, sourcemapSourcesRoot);
     }
 
     const wroteSourceMap = writeSourceMap(
-      sourcemapOutput,
-      JSON.stringify(sourceMap),
-      log,
-    );
+    sourcemapOutput,
+    JSON.stringify(sourceMap),
+    log);
+
 
     return Promise.all([writeUnbundle, wroteSourceMap]);
   } else {
@@ -86,9 +86,9 @@ function saveAsIndexedFile(
 
 const fileHeader = new Buffer(4);
 fileHeader.writeUInt32LE(MAGIC_UNBUNDLE_FILE_HEADER, 0);
-const nullByteBuffer: Buffer = new Buffer(1).fill(0);
+const nullByteBuffer = new Buffer(1).fill(0);
 
-function writeBuffers(stream, buffers: Array<Buffer>) {
+function writeBuffers(stream, buffers) {
   buffers.forEach(buffer => stream.write(buffer));
   return new Promise((resolve, reject) => {
     stream.on('error', reject);
@@ -104,8 +104,8 @@ function nullTerminatedBuffer(contents, encoding) {
 function moduleToBuffer(id, code, encoding) {
   return {
     id,
-    buffer: nullTerminatedBuffer(code, encoding),
-  };
+    buffer: nullTerminatedBuffer(code, encoding) };
+
 }
 
 function entryOffset(n) {
@@ -127,7 +127,7 @@ function buildModuleTable(startupCode, moduleBuffers, moduleGroups) {
   const moduleIds = Array.from(moduleGroups.modulesById.keys());
   const maxId = moduleIds.reduce((max, id) => Math.max(max, id));
   const numEntries = maxId + 1;
-  const table: Buffer = new Buffer(entryOffset(numEntries)).fill(0);
+  const table = new Buffer(entryOffset(numEntries)).fill(0);
 
   // num_entries
   table.writeUInt32LE(numEntries, 0);
@@ -137,7 +137,7 @@ function buildModuleTable(startupCode, moduleBuffers, moduleGroups) {
 
   // entries
   let codeOffset = startupCode.length;
-  moduleBuffers.forEach(({id, buffer}) => {
+  moduleBuffers.forEach((_ref) => {let id = _ref.id,buffer = _ref.buffer;
     const group = moduleGroups.groups.get(id);
     const idsInGroup = group ? [id].concat(Array.from(group)) : [id];
 
@@ -160,30 +160,30 @@ function groupCode(rootCode, moduleGroup, modulesById) {
   }
   const code = [rootCode];
   for (const id of moduleGroup) {
-    code.push((modulesById.get(id) || {code: ''}).code);
+    code.push((modulesById.get(id) || { code: '' }).code);
   }
 
   return code.join('\n');
 }
 
 function buildModuleBuffers(modules, moduleGroups, encoding) {
-  return modules
-    .filter(m => !moduleGroups.modulesInGroups.has(m.id))
-    .map(({id, code}) =>
+  return modules.
+  filter(m => !moduleGroups.modulesInGroups.has(m.id)).
+  map((_ref2) => {let id = _ref2.id,code = _ref2.code;return (
       moduleToBuffer(
-        id,
-        groupCode(code, moduleGroups.groups.get(id), moduleGroups.modulesById),
-        encoding,
-      ),
-    );
+      id,
+      groupCode(code, moduleGroups.groups.get(id), moduleGroups.modulesById),
+      encoding));});
+
+
 }
 
 function buildTableAndContents(
-  startupCode: string,
-  modules: $ReadOnlyArray<ModuleTransportLike>,
-  moduleGroups: ModuleGroups,
-  encoding?: 'utf8' | 'utf16le' | 'ascii',
-) {
+startupCode,
+modules,
+moduleGroups,
+encoding)
+{
   // file contents layout:
   // - magic number      char[4]  0xE5 0xD1 0x0B 0xFB (0xFB0BD1E5 uint32 LE)
   // - offset table      table    see `buildModuleTables`
@@ -193,25 +193,25 @@ function buildTableAndContents(
   const startupCodeBuffer = nullTerminatedBuffer(startupCode, encoding);
   const moduleBuffers = buildModuleBuffers(modules, moduleGroups, encoding);
   const table = buildModuleTable(
-    startupCodeBuffer,
-    moduleBuffers,
-    moduleGroups,
-  );
+  startupCodeBuffer,
+  moduleBuffers,
+  moduleGroups);
+
 
   return [fileHeader, table, startupCodeBuffer].concat(
-    moduleBuffers.map(({buffer}) => buffer),
-  );
+  moduleBuffers.map((_ref3) => {let buffer = _ref3.buffer;return buffer;}));
+
 }
 
 function createModuleGroups(
-  groups: Map<number, Set<number>>,
-  modules: $ReadOnlyArray<ModuleTransportLike>,
-): ModuleGroups {
+groups,
+modules)
+{
   return {
     groups,
     modulesById: new Map(modules.map(m => [m.id, m])),
-    modulesInGroups: new Set(concat(groups.values())),
-  };
+    modulesInGroups: new Set(concat(groups.values())) };
+
 }
 
 function* concat(iterators) {

@@ -264,17 +264,17 @@ function transformSymbolMember() {
   /*eslint consistent-return: 0*/
 
   /**
-                                   * Transforms function properties of the `Symbol` into
-                                   * the presence check, and fallback string "@@<name>".
-                                   *
-                                   * Example:
-                                   *
-                                   *   Symbol.iterator;
-                                   *
-                                   * Transformed to:
-                                   *
-                                   *   typeof Symbol.iterator === 'function' ? Symbol.iterator : '@@iterator';
-                                   */
+                                                                   * Transforms function properties of the `Symbol` into
+                                                                   * the presence check, and fallback string "@@<name>".
+                                                                   *
+                                                                   * Example:
+                                                                   *
+                                                                   *   Symbol.iterator;
+                                                                   *
+                                                                   * Transformed to:
+                                                                   *
+                                                                   *   typeof Symbol.iterator === 'function' ? Symbol.iterator : '@@iterator';
+                                                                   */
   return function symbolMember() {
     const t = babelTypes7;
 
